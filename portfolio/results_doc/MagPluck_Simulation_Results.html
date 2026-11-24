@@ -1,0 +1,456 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>MagPluck Simulation Results</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Space+Grotesk:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+@page { size: letter; margin: 0.55in 0.6in 0.6in; @bottom-right { content: counter(page); font-family: Outfit, Arial, sans-serif; font-size: 9pt; color: #1F3A68; } @bottom-left { content: "MagPluck · Team 10 · Simulation Results"; font-family: "Source Sans 3", Arial, sans-serif; font-size: 8pt; color: #5D6576; } }
+:root { --navy:#1F3A68; --coral:#C9573A; --coralbg:#FBE9E3; --ink:#24282F; --mute:#5D6576; --rule:#C9D0DE; --tint:#EEF2F8; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:"Source Sans 3",Arial,sans-serif; font-size:10.2pt; line-height:1.38; color:var(--ink); background:#fff; }
+h1 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:26pt; font-weight:700; margin:0 0 4px; }
+h2 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:14pt; font-weight:600; margin:18px 0 4px; padding-top:6px; border-top:1.6px solid var(--navy); break-after:avoid; }
+h3 { font-family:"Space Grotesk",Arial,sans-serif; color:var(--navy); font-size:10.6pt; font-weight:500; margin:10px 0 3px; break-after:avoid; }
+p { margin:0 0 6px; max-width:7.2in; }
+ul { margin:2px 0 8px; padding-left:18px; } li { margin-bottom:3px; }
+.kicker { font-family:Outfit,Arial,sans-serif; font-size:8.5pt; letter-spacing:.09em; text-transform:uppercase; color:var(--coral); font-weight:600; }
+.meta { color:var(--mute); font-size:9.5pt; margin-bottom:12px; }
+.box { background:var(--tint); border-radius:6px; padding:9px 12px; margin:8px 0 10px; break-inside:avoid; }
+.box.coral { background:var(--coralbg); }
+.box h3 { margin-top:0; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0 12px; }
+.stat { border:1.4px solid var(--navy); border-radius:6px; padding:7px 9px; }
+.stat b { display:block; font-family:Outfit,Arial,sans-serif; font-size:17pt; color:var(--navy); line-height:1.1; }
+.stat span { font-size:8.4pt; color:var(--mute); }
+table.t { width:100%; border-collapse:collapse; font-size:8.6pt; margin:4px 0 4px; break-inside:auto; }
+table.t th { font-family:Outfit,Arial,sans-serif; font-weight:600; color:var(--navy); text-align:left; border-bottom:1.6px solid var(--navy); padding:3px 4px; vertical-align:bottom; }
+table.t td { border-bottom:1px solid var(--rule); padding:2.6px 4px; vertical-align:top; }
+table.t tr { break-inside:avoid; }
+table.t td:first-child { white-space:nowrap; }
+.pair { display:flex; gap:10px; break-inside:avoid; } .pair figure { margin:6px 0; }
+table.t.small { font-size:7.7pt; }
+table.t.small td, table.t.small th { padding:2.4px 3px; }
+table.t tr.hl td { background:var(--coralbg); }
+table.t tr.hl td:first-child { color:var(--coral); font-weight:700; }
+.note { font-size:8.4pt; color:var(--mute); margin:2px 0 10px; }
+figure { margin:8px auto 10px; break-inside:avoid; }
+figure img { width:100%; display:block; border:1px solid var(--rule); }
+figcaption { font-size:8.4pt; margin-top:3px; }
+figcaption b { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; }
+.pb { break-before:page; }
+.toc { columns:2; font-size:9.6pt; margin:0 0 6px; padding-left:18px; }
+</style></head><body>
+
+<div class="kicker">TSA Engineering Design 2026–27 · Team 10</div>
+<h1>MagPluck Simulation Results</h1>
+<div class="meta">Every result from our harvester simulation in one place: the hand calculations it checks, the redesign search, the time-domain runs, the frequency sweep, and the readouts from the interactive bench shown in our video.</div>
+
+<div class="stats">
+<div class="stat"><b>0.4×</b><span>force margin of the poster design once the snap distance is fixed (poster claimed 12×)</span></div>
+<div class="stat"><b>1.61–1.71×</b><span>force margin of our redesign, all three lengths</span></div>
+<div class="stat"><b>7.9 V</b><span>peak output, 105 mm redesign at 16.1 Hz, 0.2 g, 1 MΩ</span></div>
+<div class="stat"><b>~28 µW</b><span>average power at the same point; no magnet contact</span></div>
+</div>
+
+<div class="box"><h3>What the simulation found</h3>
+<ul>
+<li><b>The poster's snap distances are about 2.4 times too small.</b> Its own formula, d<sub>snap</sub> = (4C/k)<sup>1/5</sup>, gives 13.3 / 14.3 / 15.3 mm, not 5.5 / 6.1 / 6.8 mm. With the right numbers the force margin falls from 12× to 0.37–0.49×.</li>
+<li><b>Built as drawn, the magnets snap together and stay stuck</b> at all three lengths. In the simulation the gap closes to about 2 mm and never opens again.</li>
+<li><b>Our redesign plucks once every shake cycle with no contact.</b> It uses a stiffer, shorter driver with a larger 12.7 mm magnet. The piezo beam is unchanged. Margin is 1.61–1.71× and the closest gap stays 1.44–1.50× the snap distance.</li>
+<li><b>Output is 3.3 / 3.6 / 7.9 V peak</b> for the 85 / 95 / 105 mm piezo beams with a realistic piezo coupling. That is far below the poster's 50 V target. The poster's 100 V/mm calibration would need more electrical energy than the beam stores.</li>
+<li><b>Pull and release works:</b> after the driver lets go, the piezo rings at its own frequency with 54–73% of the pull. But in steady shaking the next pluck arrives after only 1.1–1.6 piezo cycles, so the output stays at the shake frequency.</li>
+</ul></div>
+
+<div class="box coral"><h3>After the design review: five follow-up studies</h3>
+<ul>
+<li><b>Piezo on the driver (Section 10).</b> The driver loses 2.2 mW to damping at 2 m/s² (105 mm). A second bimorph on the driver, placed where its strain stays under 500 µε, adds 340 µW, about 12× what the piezo beam makes. This is the biggest single improvement we found.</li>
+<li><b>Design under uncertainty (Section 11).</b> The paper's closed-form gain law is only reliable close to our current design. The exact linear two-mode model it comes from matches the full simulation (R² 0.90). Searching for the best median result, with assumed spreads in damping, stiffness, magnet strength, gap and coupling, gives a 105 mm design with a median power of 85 µW in the full simulation, against 9 µW for the current redesign.</li>
+<li><b>Sweep-past magnets (Section 12).</b> With small driver magnets sliding past the piezo magnet, the release is fast (0.05–0.34 piezo periods) and the piezo rings at about 95% of its pull. Steady output at 105 mm rises to 59 µW. Even so, the energy stays at the shaking frequency, so this is still not frequency up-conversion.</li>
+<li><b>Recorded car vibration (Section 13).</b> On a real cobblestone recording the magnets add 1.03–1.29× power. That is close to the paper's 1.35× for synthetic noise, and far below the 4–5× seen for a pure tone. The driver bimorph adds 2.2–2.6× on the same road.</li>
+<li><b>First experiment (Section 14).</b> A sweep at 0.1–0.5 m/s² is safe: the closest gap stays above 36 mm. The table gives the two mode frequencies, the voltages and the power gain we predict for each beam length.</li>
+</ul></div>
+
+<div class="note">Model: two lumped spring–mass cantilevers (driver and piezo), damping ratio 0.015, coaxial magnet force F = C/d⁴ with a contact spring, piezo coupled to a 7.53 nF bimorph and 1 MΩ load. Base shaking is 2 m/s² (about 0.2 g) unless noted. "Physical θ" is our first-principles coupling estimate; "poster θ" is the poster's 50 V at 0.5 mm calibration. Main runs use LSODA; the 1,278-point sweep uses RK4 at 10 µs. The two agree to 0.03%.</div>
+
+
+
+<h2 class="pb">1. Beam and magnet numbers</h2>
+<p>We rebuilt each step of the poster's beam math. Tables 2 and 5–8 match to within 0.4%.</p>
+<h3>Transformed widths (Table 2)</h3>
+<table class="t "><thead><tr><th>Layer</th><th>E (GPa)</th><th>n</th><th>b_tr (mm) recomputed</th><th>poster</th><th>% diff</th></tr></thead><tbody>
+<tr><td>PETG</td><td>2.1</td><td>1.00</td><td>10.0</td><td>10.0</td><td>+0.00</td></tr>
+<tr><td>PZT</td><td>66</td><td>31.43</td><td>314.3</td><td>314.3</td><td>-0.00</td></tr>
+<tr><td>Cu</td><td>117</td><td>55.71</td><td>557.1</td><td>557.1</td><td>+0.01</td></tr></tbody></table>
+<h3>Neutral axis, I and EI for each section (Tables 3–5)</h3>
+<table class="t small"><thead><tr><th>Section / stack</th><th>ȳ (mm)</th><th>poster ȳ</th><th>I (mm⁴)</th><th>poster I</th><th>EI (N m²)</th><th>poster EI</th><th>EI % diff</th></tr></thead><tbody>
+<tr><td>A/D: PETG</td><td>0.500</td><td>0.5</td><td>0.833</td><td>0.833</td><td>1.750e-03</td><td>1.750e-03</td><td>+0.0</td></tr>
+<tr><td>B: PETG + Cu (inferred, exact match)</td><td>0.966</td><td>0.966</td><td>3.444</td><td>3.444</td><td>7.233e-03</td><td>7.232e-03</td><td>+0.0</td></tr>
+<tr><td>C cand. 1: PETG + PZT + Cu</td><td>1.118</td><td>1.023</td><td>5.900</td><td>6.959</td><td>1.239e-02</td><td>1.461e-02</td><td>-15.2</td></tr>
+<tr><td>C cand. 2: PETG + PZT + PZT</td><td>1.148</td><td>1.023</td><td>7.048</td><td>6.959</td><td>1.480e-02</td><td>1.461e-02</td><td>+1.3</td></tr>
+<tr><td>C cand. 3: symmetric PZT/PETG/PZT</td><td>0.700</td><td>1.023</td><td>46.510</td><td>6.959</td><td>9.767e-02</td><td>1.461e-02</td><td>+568.5</td></tr>
+<tr><td>C physical: PETG + 5 mm-wide PZT/Cu/PZT bimorph</td><td>1.176</td><td>1.023</td><td>7.547</td><td>6.959</td><td>1.585e-02</td><td>1.461e-02</td><td>+8.5</td></tr></tbody></table>
+<p class="note">Section C on the poster does not match any real layer stack. We used the poster's EI values to reproduce its tables, and the real bimorph stack (last row) only for the coupling estimate.</p>
+<h3>Spring constants (Tables 6–7)</h3>
+<table class="t "><thead><tr><th>Length</th><th>k<sub>piezo</sub> (N/m)</th><th>poster</th><th>% diff</th><th>L_D tip (mm)</th><th>Driver L (mm)</th><th>k<sub>driver</sub> (N/m)</th><th>poster</th><th>% diff</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>43.89</td><td>43.9</td><td>-0.01</td><td>28.0</td><td>75</td><td>12.44</td><td>12.4</td><td>+0.36</td></tr>
+<tr><td>95 mm</td><td>28.40</td><td>28.4</td><td>-0.01</td><td>38.0</td><td>85</td><td>8.55</td><td>8.55</td><td>-0.01</td></tr>
+<tr><td>105 mm</td><td>18.89</td><td>18.9</td><td>-0.04</td><td>48.0</td><td>95</td><td>6.12</td><td>6.12</td><td>+0.05</td></tr></tbody></table>
+<h3>Natural frequencies (Table 8)</h3>
+<table class="t "><thead><tr><th>Cantilever</th><th>k (N/m)</th><th>m<sub>eff</sub> (kg)</th><th>poster m<sub>eff</sub></th><th>f<sub>n</sub> (Hz)</th><th>poster f<sub>n</sub></th><th>% diff</th><th>f<sub>n</sub> w/ real magnet mass (Hz)</th></tr></thead><tbody>
+<tr><td>Piezo 85 mm</td><td>43.9</td><td>0.001215</td><td>0.001215</td><td>30.3</td><td>30.2</td><td>+0.2</td><td>28.9</td></tr>
+<tr><td>Piezo 95 mm</td><td>28.4</td><td>0.001337</td><td>0.001337</td><td>23.2</td><td>23.2</td><td>-0.0</td><td>22.2</td></tr>
+<tr class="hl"><td>Piezo 105 mm</td><td>18.9</td><td>0.001460</td><td>0.00146</td><td>18.1</td><td>18.1</td><td>+0.0</td><td>17.4</td></tr>
+<tr><td>Driver 75 mm</td><td>12.44</td><td>0.000519</td><td>0.00052</td><td>24.6</td><td>24.6</td><td>+0.2</td><td>24.6</td></tr>
+<tr><td>Driver 85 mm</td><td>8.55</td><td>0.000549</td><td>0.000549</td><td>19.9</td><td>19.9</td><td>-0.2</td><td>19.9</td></tr>
+<tr><td>Driver 95 mm</td><td>6.12</td><td>0.000579</td><td>0.000579</td><td>16.4</td><td>16.4</td><td>-0.2</td><td>16.4</td></tr></tbody></table>
+<p class="note">The poster's piezo masses imply a 0.17 g tip magnet, but the identical driver magnet weighs 0.295 g. With the real mass the 105 mm piezo drops to 17.4 Hz, just under the 18 Hz floor.</p>
+<h3>Magnet strength (Section 7)</h3>
+<table class="t "><thead><tr><th>Quantity</th><th>recomputed</th><th>poster</th><th>% diff</th></tr></thead><tbody>
+<tr><td>m (A m²)</td><td>0.04625</td><td>0.04625</td><td>+0.00</td></tr>
+<tr><td>C in F=C/d⁴ (N m⁴)</td><td>1.2834e-09</td><td>1.284e-09</td><td>-0.04</td></tr>
+<tr><td>magnet mass (g)</td><td>0.295</td><td>-</td><td>-</td></tr></tbody></table>
+
+<h2 class="pb">2. Snap distance and force check</h2>
+<p>Snap happens when the magnet pull gets stiffer than the beam: 4C/d⁵ = k. We design the closest approach to be 1.5 times this distance. When both beams are free, they act like two springs in series, so the snap gap is a little larger (two-body column).</p>
+<h3>Snap distance, corrected (Table 9)</h3>
+<table class="t "><thead><tr><th>Config</th><th>d<sub>snap</sub> piezo (mm)</th><th>d<sub>snap</sub> driver (mm)</th><th>d<sub>safe</sub> = 1.5 d<sub>snap</sub>,drv (mm)</th><th>d<sub>snap</sub> two-body k<sub>series</sub> (mm)</th><th>d<sub>safe</sub> two-body (mm)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>10.32</td><td>13.28 ◂ governs</td><td>19.9</td><td>13.96</td><td>20.9</td></tr>
+<tr><td>95 mm</td><td>11.26</td><td>14.31 ◂ governs</td><td>21.5</td><td>15.09</td><td>22.6</td></tr>
+<tr><td>105 mm</td><td>12.21</td><td>15.30 ◂ governs</td><td>22.9</td><td>16.18</td><td>24.3</td></tr></tbody></table>
+<h3>Force check, corrected (Table 10)</h3>
+<table class="t "><thead><tr><th>Config</th><th>F<sub>req</sub> (mN)</th><th>F<sub>avail</sub> (mN)</th><th>Margin</th><th>Margin (two-body)</th><th>static pluck defl. F<sub>avail</sub>/k<sub>p</sub> (mm)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>21.9</td><td>8.16</td><td>0.37x</td><td>0.30x</td><td>0.186</td></tr>
+<tr><td>95 mm</td><td>14.2</td><td>6.04</td><td>0.43x</td><td>0.34x</td><td>0.213</td></tr>
+<tr><td>105 mm</td><td>9.4</td><td>4.63</td><td>0.49x</td><td>0.39x</td><td>0.245</td></tr></tbody></table>
+<h3>Poster versus corrected</h3>
+<table class="t small"><thead><tr><th>Quantity</th><th>85 mm: poster → ours</th><th>95 mm: poster → ours</th><th>105 mm: poster → ours</th></tr></thead><tbody>
+<tr><td>d<sub>snap</sub> piezo (mm)</td><td>4.13 → 10.3</td><td>4.67 → 11.3</td><td>5.22 → 12.2</td></tr>
+<tr><td>d<sub>snap</sub> driver (mm)</td><td>5.54 → 13.3</td><td>6.14 → 14.3</td><td>6.84 → 15.3</td></tr>
+<tr><td>d<sub>safe</sub> (mm)</td><td>8.3 → 19.9</td><td>9.2 → 21.5</td><td>10.3 → 22.9</td></tr>
+<tr><td>F<sub>req</sub> (mN)</td><td>22 → 21.9</td><td>14.2 → 14.2</td><td>9.5 → 9.45</td></tr>
+<tr><td>F<sub>avail</sub> (mN)</td><td>269 → 8.16</td><td>179 → 6.04</td><td>114 → 4.63</td></tr>
+<tr><td>Margin (x)</td><td>12 → 0.372</td><td>13 → 0.426</td><td>12 → 0.49</td></tr>
+<tr><td>Static pluck deflection (mm)</td><td>6.13 → 0.186</td><td>6.3 → 0.213</td><td>6.03 → 0.245</td></tr>
+<tr><td>Implied V at 100 V/mm (V)</td><td>613 → 18.6</td><td>630 → 21.3</td><td>603 → 24.5</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/01_force_vs_gap_snap.png"><figcaption><b>Figure 1.</b> Magnet force and beam spring force against gap. Where the magnet curve gets steeper than the spring, the magnets snap.</figcaption></figure>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/02_before_after.png"><figcaption><b>Figure 2.</b> Poster numbers next to corrected numbers for each beam length.</figcaption></figure>
+
+<h2 class="pb">3. Redesign</h2>
+<p>We searched about 2.3 million designs per beam length. Each one had to meet every rule: force margin of at least 1.5 (two-body), closest approach 1.5× the snap gap, driver at 16–30 Hz, piezo at 18–30 Hz with the real magnet mass, gap at least twice the magnet size, and a force swing of at least 1.2× F<sub>req</sub> each cycle. We kept the feasible design closest to the original.</p>
+<h3>What changed</h3>
+<table class="t small"><thead><tr><th>Config</th><th>Parameter</th><th>Old</th><th>New</th><th>Why</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>L<sub>d</sub></td><td>75 mm</td><td>56 mm</td><td>sets driver k (k ~ L⁻³) and f<sub>d</sub></td></tr>
+<tr><td>85 mm</td><td>t<sub>d</sub></td><td>1 mm</td><td>1.5 mm</td><td>driver k ~ t³: stiffer driver raises F<sub>avail</sub> ~ k^0.8</td></tr>
+<tr><td>85 mm</td><td>D<sub>d</sub></td><td>5 mm</td><td>12.7 mm</td><td>bigger driver magnet: C ~ m<sub>d</sub> m<sub>p</sub>, and acts as tip mass so a stiffer driver stays at 16-30 Hz</td></tr>
+<tr><td>85 mm</td><td>h<sub>d</sub></td><td>2 mm</td><td>8 mm</td><td>same as D<sub>d</sub> (volume)</td></tr>
+<tr><td>85 mm</td><td>m<sub>add</sub></td><td>0 g</td><td>2 g</td><td>dead tip mass to pull f<sub>d</sub> back into band</td></tr>
+<tr><td>85 mm</td><td>D<sub>p</sub></td><td>5 mm</td><td>6 mm</td><td>piezo magnet: C ~ m<sub>p</sub> but adds piezo mass (lowers f<sub>p</sub>)</td></tr>
+<tr><td>85 mm</td><td>h<sub>p</sub></td><td>2 mm</td><td>3 mm</td><td>same as D<sub>p</sub></td></tr>
+<tr><td>95 mm</td><td>L<sub>d</sub></td><td>85 mm</td><td>40 mm</td><td>sets driver k (k ~ L⁻³) and f<sub>d</sub></td></tr>
+<tr><td>95 mm</td><td>D<sub>d</sub></td><td>5 mm</td><td>12.7 mm</td><td>bigger driver magnet: C ~ m<sub>d</sub> m<sub>p</sub>, and acts as tip mass so a stiffer driver stays at 16-30 Hz</td></tr>
+<tr><td>95 mm</td><td>h<sub>d</sub></td><td>2 mm</td><td>8 mm</td><td>same as D<sub>d</sub> (volume)</td></tr>
+<tr><td>105 mm</td><td>L<sub>d</sub></td><td>95 mm</td><td>66 mm</td><td>sets driver k (k ~ L⁻³) and f<sub>d</sub></td></tr>
+<tr><td>105 mm</td><td>t<sub>d</sub></td><td>1 mm</td><td>1.5 mm</td><td>driver k ~ t³: stiffer driver raises F<sub>avail</sub> ~ k^0.8</td></tr>
+<tr><td>105 mm</td><td>D<sub>d</sub></td><td>5 mm</td><td>12.7 mm</td><td>bigger driver magnet: C ~ m<sub>d</sub> m<sub>p</sub>, and acts as tip mass so a stiffer driver stays at 16-30 Hz</td></tr>
+<tr><td>105 mm</td><td>h<sub>d</sub></td><td>2 mm</td><td>6 mm</td><td>same as D<sub>d</sub> (volume)</td></tr>
+<tr><td>105 mm</td><td>D<sub>p</sub></td><td>5 mm</td><td>4 mm</td><td>piezo magnet: C ~ m<sub>p</sub> but adds piezo mass (lowers f<sub>p</sub>)</td></tr></tbody></table>
+<h3>Redesign performance</h3>
+<table class="t small"><thead><tr><th>Config</th><th>k<sub>d</sub> (N/m)</th><th>k<sub>p</sub> (N/m)</th><th>f<sub>d</sub> (Hz)</th><th>f<sub>p</sub> (Hz)</th><th>d<sub>safe</sub> (mm)</th><th>F<sub>req</sub> (mN)</th><th>F<sub>avail</sub> (mN)</th><th>Margin (two-body)</th><th>Margin (poster rule)</th><th>X<sub>rel</sub> @f<sub>d</sub> (mm)</th><th>force swing / F<sub>req</sub></th><th>static pluck defl. (mm)</th><th># feasible grid pts</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>100.9</td><td>43.9</td><td>16.1</td><td>25.7</td><td>37.2</td><td>21.9</td><td>37.4</td><td>1.71x</td><td>2.28x</td><td>6.60</td><td>1.20x</td><td>0.85</td><td>210</td></tr>
+<tr><td>95 mm</td><td>82.0</td><td>28.4</td><td>16.4</td><td>22.2</td><td>34.3</td><td>14.2</td><td>23.8</td><td>1.68x</td><td>2.13x</td><td>6.32</td><td>1.20x</td><td>0.84</td><td>5575</td></tr>
+<tr><td>105 mm</td><td>61.6</td><td>18.9</td><td>16.1</td><td>18.0</td><td>32.0</td><td>9.4</td><td>15.2</td><td>1.61x</td><td>2.00x</td><td>6.62</td><td>1.21x</td><td>0.81</td><td>3392</td></tr></tbody></table>
+<p class="note">The driver is now shorter than the piezo by 29 / 55 / 39 mm, so it needs a riser block to put the two magnets at the same height.</p>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/06_margin_vs_parameter.png"><figcaption><b>Figure 3.</b> How force margin changes as each design variable moves. Dotted segments leave the 16–30 Hz driver band.</figcaption></figure>
+
+<h2 class="pb">4. Time-domain runs</h2>
+<p>Each run shakes the base at the driver's natural frequency for several seconds. The rest gap is the design gap plus the expected swing. "Captured" means the magnets touch for more than half of the last 0.5 s.</p>
+<h3>Physical coupling (our estimate)</h3>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>Rest gap (mm)</th><th>Shake f (Hz)</th><th>Piezo f (Hz)</th><th>Min gap (mm)</th><th>Snap gap (mm)</th><th>magnets</th><th>Plucks / s</th><th>Driver tip (mm)</th><th>Piezo tip (mm)</th><th>V peak</th><th>Power (µW)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>Poster as drawn</td><td>11.78</td><td>24.6</td><td>28.9</td><td>1.84</td><td>14.0</td><td>STUCK (captured)</td><td>0</td><td>8.08</td><td>2.606</td><td>2.70</td><td>3.40</td></tr>
+<tr><td>95 mm</td><td>Poster as drawn</td><td>14.61</td><td>19.9</td><td>22.2</td><td>1.79</td><td>15.1</td><td>STUCK (captured)</td><td>0</td><td>10.78</td><td>3.990</td><td>4.56</td><td>8.40</td></tr>
+<tr><td>105 mm</td><td>Poster as drawn</td><td>18.20</td><td>16.4</td><td>17.4</td><td>1.84</td><td>16.2</td><td>STUCK (captured)</td><td>0</td><td>15.11</td><td>6.756</td><td>8.46</td><td>28.67</td></tr>
+<tr><td>85 mm</td><td>Corrected gap</td><td>23.39</td><td>24.6</td><td>28.9</td><td>21.08</td><td>14.0</td><td>ok</td><td>0</td><td>1.47</td><td>0.524</td><td>2.57</td><td>3.23</td></tr>
+<tr><td>95 mm</td><td>Corrected gap</td><td>26.87</td><td>19.9</td><td>22.2</td><td>23.11</td><td>15.1</td><td>ok</td><td>0</td><td>2.86</td><td>1.053</td><td>4.09</td><td>7.70</td></tr>
+<tr><td>105 mm</td><td>Corrected gap</td><td>30.85</td><td>16.4</td><td>17.4</td><td>24.88</td><td>16.2</td><td>ok</td><td>0</td><td>4.26</td><td>2.697</td><td>7.68</td><td>26.00</td></tr>
+<tr><td>85 mm</td><td>Redesign</td><td>43.78</td><td>16.1</td><td>25.7</td><td>37.19</td><td>24.8</td><td>ok</td><td>15</td><td>5.61</td><td>1.045</td><td>3.29</td><td>3.84</td></tr>
+<tr><td>95 mm</td><td>Redesign</td><td>40.66</td><td>16.4</td><td>22.2</td><td>33.95</td><td>22.9</td><td>ok</td><td>16</td><td>5.43</td><td>1.370</td><td>3.60</td><td>5.34</td></tr>
+<tr class="hl"><td>105 mm</td><td>Redesign</td><td>38.59</td><td>16.1</td><td>18.0</td><td>30.79</td><td>21.3</td><td>ok</td><td>16</td><td>5.16</td><td>3.140</td><td>7.92</td><td>27.78</td></tr>
+<tr><td>85 mm</td><td>Redesign, magnets removed</td><td>43.78</td><td>16.1</td><td>25.7</td><td>37.27</td><td>24.8</td><td>ok</td><td>0</td><td>6.52</td><td>0.171</td><td>0.84</td><td>0.35</td></tr>
+<tr><td>95 mm</td><td>Redesign, magnets removed</td><td>40.66</td><td>16.4</td><td>22.2</td><td>34.41</td><td>22.9</td><td>ok</td><td>0</td><td>6.25</td><td>0.334</td><td>1.28</td><td>0.79</td></tr>
+<tr><td>105 mm</td><td>Redesign, magnets removed</td><td>38.59</td><td>16.1</td><td>18.0</td><td>32.09</td><td>21.3</td><td>ok</td><td>0</td><td>6.58</td><td>1.256</td><td>3.69</td><td>5.71</td></tr></tbody></table>
+<h3>Poster coupling (50 V at 0.5 mm)</h3>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>Rest gap (mm)</th><th>Shake f (Hz)</th><th>Piezo f (Hz)</th><th>Min gap (mm)</th><th>Snap gap (mm)</th><th>magnets</th><th>Plucks / s</th><th>Driver tip (mm)</th><th>Piezo tip (mm)</th><th>V peak</th><th>Power (µW)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>Poster as drawn</td><td>11.78</td><td>24.6</td><td>28.9</td><td>1.87</td><td>14.0</td><td>STUCK (captured)</td><td>0</td><td>7.72</td><td>2.245</td><td>5.86</td><td>17.21</td></tr>
+<tr><td>95 mm</td><td>Poster as drawn</td><td>14.61</td><td>19.9</td><td>22.2</td><td>1.82</td><td>15.1</td><td>STUCK (captured)</td><td>0</td><td>9.82</td><td>3.027</td><td>6.92</td><td>23.88</td></tr>
+<tr><td>105 mm</td><td>Poster as drawn</td><td>18.20</td><td>16.4</td><td>17.4</td><td>1.85</td><td>16.2</td><td>STUCK (captured)</td><td>0</td><td>12.39</td><td>4.104</td><td>7.88</td><td>30.89</td></tr>
+<tr><td>85 mm</td><td>Corrected gap</td><td>23.39</td><td>24.6</td><td>28.9</td><td>21.07</td><td>14.0</td><td>ok</td><td>0</td><td>1.80</td><td>0.186</td><td>5.80</td><td>15.97</td></tr>
+<tr><td>95 mm</td><td>Corrected gap</td><td>26.87</td><td>19.9</td><td>22.2</td><td>23.09</td><td>15.1</td><td>ok</td><td>0</td><td>3.64</td><td>0.204</td><td>7.27</td><td>21.52</td></tr>
+<tr><td>105 mm</td><td>Corrected gap</td><td>30.85</td><td>16.4</td><td>17.4</td><td>24.73</td><td>16.2</td><td>ok</td><td>0</td><td>6.02</td><td>0.215</td><td>8.01</td><td>26.01</td></tr>
+<tr><td>85 mm</td><td>Redesign</td><td>43.78</td><td>16.1</td><td>25.7</td><td>37.40</td><td>24.8</td><td>ok</td><td>14</td><td>5.71</td><td>0.780</td><td>16.69</td><td>91.51</td></tr>
+<tr><td>95 mm</td><td>Redesign</td><td>40.66</td><td>16.4</td><td>22.2</td><td>34.39</td><td>22.9</td><td>ok</td><td>14</td><td>5.67</td><td>0.721</td><td>14.57</td><td>67.33</td></tr>
+<tr><td>105 mm</td><td>Redesign</td><td>38.59</td><td>16.1</td><td>18.0</td><td>31.96</td><td>21.3</td><td>ok</td><td>14</td><td>6.14</td><td>0.644</td><td>12.93</td><td>51.82</td></tr>
+<tr><td>85 mm</td><td>Redesign, magnets removed</td><td>43.78</td><td>16.1</td><td>25.7</td><td>37.31</td><td>24.8</td><td>ok</td><td>0</td><td>6.52</td><td>0.070</td><td>4.22</td><td>8.96</td></tr>
+<tr><td>95 mm</td><td>Redesign, magnets removed</td><td>40.66</td><td>16.4</td><td>22.2</td><td>34.45</td><td>22.9</td><td>ok</td><td>0</td><td>6.25</td><td>0.077</td><td>4.75</td><td>11.25</td></tr>
+<tr><td>105 mm</td><td>Redesign, magnets removed</td><td>38.59</td><td>16.1</td><td>18.0</td><td>32.08</td><td>21.3</td><td>ok</td><td>0</td><td>6.58</td><td>0.092</td><td>5.60</td><td>15.77</td></tr></tbody></table>
+<p class="note">Solver check (redesign 85 mm, physical θ): LSODA 3.292 V and RK4 3.292 V; minimum gap 37.186 mm in both.</p>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/03_time_105mm.png"><figcaption><b>Figure 4.</b> Tip motion, gap and voltage over time, 105 mm piezo, for the poster, corrected and redesigned layouts.</figcaption></figure>
+<figure style="width:88%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/03_time_95mm.png"><figcaption><b>Figure 5.</b> Same, 95 mm piezo.</figcaption></figure>
+<figure style="width:88%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/03_time_85mm.png"><figcaption><b>Figure 6.</b> Same, 85 mm piezo.</figcaption></figure>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/04_fft_upconversion.png"><figcaption><b>Figure 7.</b> Frequency content of the voltage. Energy sits at the shake frequency and its 2× harmonic, not at the piezo’s own frequency.</figcaption></figure>
+
+<h2 class="pb">5. Pull and release</h2>
+<p>One pluck on its own: the driver swings in, pulls the piezo, then swings away and lets it ring.</p>
+<table class="t small"><thead><tr><th>Config</th><th>f<sub>d</sub> (Hz)</th><th>f<sub>p</sub> (Hz)</th><th>f<sub>p</sub>/f<sub>d</sub> (piezo cycles per pluck)</th><th>release time (ms)</th><th>release / T_p</th><th>pull (mm)</th><th>free ring after release (mm)</th><th>ring / pull</th><th>V_pk after release</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>16.1</td><td>25.7</td><td>1.60</td><td>31</td><td>0.80</td><td>0.69</td><td>0.37</td><td>0.54</td><td>2.36</td></tr>
+<tr><td>95 mm</td><td>16.4</td><td>22.2</td><td>1.35</td><td>30</td><td>0.68</td><td>0.69</td><td>0.44</td><td>0.64</td><td>2.28</td></tr>
+<tr><td>105 mm</td><td>16.1</td><td>18.0</td><td>1.12</td><td>31</td><td>0.56</td><td>0.70</td><td>0.51</td><td>0.73</td><td>1.78</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/07_pluck_release.png"><figcaption><b>Figure 8.</b> A single pull and release for each redesign. After release the piezo rings at its own frequency and dies out over about 0.4 s.</figcaption></figure>
+<div class="box"><h3>Why steady shaking does not show the ring-down</h3>
+<p>Two things must be true for a visible pluck: the release must be quick compared with one piezo cycle, and the piezo needs several cycles before the next pluck. Raising the piezo frequency helps the second but hurts the first. Getting both would mean breaking the 1.5× snap rule or moving the piezo above the 18–30 Hz band.</p></div>
+<div class="pair"><figure style="width:50%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/portfolio/figs/pluck_step1.png"><figcaption><b>Figure 9.</b> Pluck step 1 in the interactive bench: driver swings close.</figcaption></figure>
+<figure style="width:50%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/portfolio/figs/pluck_step3.png"><figcaption><b>Figure 10.</b> Pluck step 3: driver has swung away and the piezo beam rings.</figcaption></figure></div>
+
+<h2 class="pb">6. Frequency sweep, 5–40 Hz</h2>
+<p>1,278 runs across frequency, design and beam length. None of them made magnet contact with the corrected or redesigned gaps.</p>
+<h3>Physical coupling</h3>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>f at max V (Hz)</th><th>max V peak</th><th>f range with full plucks &amp; no contact (Hz)</th><th># sweep pts with magnet contact</th><th>V peak @10 Hz</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>Corrected gap</td><td>28.5</td><td>15.9</td><td>none</td><td>0</td><td>0.36</td></tr>
+<tr><td>95 mm</td><td>Corrected gap</td><td>22.0</td><td>19.4</td><td>none</td><td>0</td><td>0.53</td></tr>
+<tr><td>105 mm</td><td>Corrected gap</td><td>17.5</td><td>20.8</td><td>none</td><td>0</td><td>0.79</td></tr>
+<tr><td>85 mm</td><td>Redesign</td><td>25.5</td><td>17.5</td><td>16.0-16.0</td><td>0</td><td>0.52</td></tr>
+<tr><td>95 mm</td><td>Redesign</td><td>21.5</td><td>18.1</td><td>16.5-16.5</td><td>0</td><td>0.60</td></tr>
+<tr class="hl"><td>105 mm</td><td>Redesign</td><td>17.5</td><td>23.7</td><td>16.0-17.5</td><td>0</td><td>0.81</td></tr>
+<tr><td>85 mm</td><td>Redesign, magnets removed</td><td>26.0</td><td>17.3</td><td>none</td><td>0</td><td>0.43</td></tr>
+<tr><td>95 mm</td><td>Redesign, magnets removed</td><td>22.5</td><td>16.9</td><td>none</td><td>0</td><td>0.51</td></tr>
+<tr><td>105 mm</td><td>Redesign, magnets removed</td><td>18.0</td><td>21.0</td><td>none</td><td>0</td><td>0.71</td></tr></tbody></table>
+<h3>Poster coupling</h3>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>f at max V (Hz)</th><th>max V peak</th><th>f range with full plucks &amp; no contact (Hz)</th><th># sweep pts with magnet contact</th><th>V peak @10 Hz</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>Corrected gap</td><td>40.0</td><td>9.4</td><td>none</td><td>0</td><td>2.75</td></tr>
+<tr><td>95 mm</td><td>Corrected gap</td><td>40.0</td><td>11.6</td><td>none</td><td>0</td><td>3.87</td></tr>
+<tr><td>105 mm</td><td>Corrected gap</td><td>36.0</td><td>11.7</td><td>none</td><td>0</td><td>5.01</td></tr>
+<tr><td>85 mm</td><td>Redesign</td><td>16.0</td><td>18.4</td><td>16.0-16.0</td><td>0</td><td>3.02</td></tr>
+<tr><td>95 mm</td><td>Redesign</td><td>16.5</td><td>13.3</td><td>none</td><td>0</td><td>3.68</td></tr>
+<tr><td>105 mm</td><td>Redesign</td><td>16.0</td><td>11.9</td><td>16.0-16.0</td><td>0</td><td>4.60</td></tr>
+<tr><td>85 mm</td><td>Redesign, magnets removed</td><td>40.0</td><td>12.2</td><td>none</td><td>0</td><td>3.32</td></tr>
+<tr><td>95 mm</td><td>Redesign, magnets removed</td><td>40.0</td><td>11.5</td><td>none</td><td>0</td><td>3.92</td></tr>
+<tr><td>105 mm</td><td>Redesign, magnets removed</td><td>37.5</td><td>11.5</td><td>none</td><td>0</td><td>4.80</td></tr></tbody></table>
+<ul>
+<li>The highest voltage (16–24 V) always comes at the piezo's own resonance, and it is almost the same with the magnets removed.</li>
+<li>Plucking adds a narrow second peak at the driver resonance: 3.3–7.9 V, about 0.5–1 Hz wide.</li>
+<li>Away from resonance (10 Hz) every design gives less than 1 V.</li>
+</ul>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/05_sweep_peakV.png"><figcaption><b>Figure 11.</b> Peak voltage across the sweep for each design and beam length.</figcaption></figure>
+<figure style="width:80%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/portfolio/figs/magnet_sweep_sim.png"><figcaption><b>Figure 12.</b> 85 mm redesign with and without magnets. The pluck peak is 3.6 V with magnets and 0.8 V without.</figcaption></figure>
+
+<h2 class="pb">7. Piezo coupling</h2>
+<p>The poster assumes 50 V at 0.5 mm of tip bend. A bimorph with 7.5 nF of capacitance at 50 V holds 9.4 µJ, more than the 2.4–5.5 µJ that bending the beam 0.5 mm stores. Our estimate from the material constants is 5–8 V per mm.</p>
+<table class="t small"><thead><tr><th>Config</th><th>θ poster (N/V)</th><th>κ² poster</th><th>θ physical (N/V)</th><th>κ² physical</th><th>V/mm physical</th><th>U_mech @0.5mm (µJ)</th><th>U_elec @50V (µJ)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>7.53e-04</td><td>1.71</td><td>6.11e-05</td><td>0.0113</td><td>8.1</td><td>5.49</td><td>9.41</td></tr>
+<tr><td>95 mm</td><td>7.53e-04</td><td>2.65</td><td>4.69e-05</td><td>0.0103</td><td>6.2</td><td>3.55</td><td>9.41</td></tr>
+<tr><td>105 mm</td><td>7.53e-04</td><td>3.98</td><td>3.61e-05</td><td>0.0092</td><td>4.8</td><td>2.36</td><td>9.41</td></tr></tbody></table>
+<h3>Hand-pluck readings against each calibration</h3>
+<table class="t "><thead><tr><th>tip defl. (mm)</th><th>measured (V)</th><th>poster-calib. 100 V/mm</th><th>% err</th><th>physical θ 85 mm (V)</th></tr></thead><tbody>
+<tr><td>0.45</td><td>45</td><td>45</td><td>+0</td><td>3.7</td></tr>
+<tr><td>1.0</td><td>74</td><td>100</td><td>+35</td><td>8.1</td></tr>
+<tr><td>1.5</td><td>148</td><td>150</td><td>+1</td><td>12.2</td></tr></tbody></table>
+<p class="note">κ² above 1 means more electrical energy than mechanical energy, which cannot happen. Our physical estimate could be off by about 2×; a clamped-beam scope test would settle it.</p>
+
+<h2>8. Interactive bench readouts</h2>
+<p>These are the live readouts from the sideways bench in our video, taken after 9 seconds of running at real-time speed with the base frequency set to the driver's natural frequency and 2 m/s² shaking. They match the Python runs in Section 4 to within a few percent.</p>
+<h3>Physical coupling</h3>
+<table class="t small"><thead><tr><th>Design</th><th>Piezo</th><th>Status</th><th>Driver f</th><th>Piezo f</th><th>Cycles / pluck</th><th>Min gap</th><th>Snap gap</th><th>Plucks / s</th><th>Piezo tip</th><th>V peak</th><th>Power</th></tr></thead><tbody>
+<tr><td>Poster as drawn</td><td>85 mm</td><td>Magnets captured</td><td>24.6 Hz</td><td>28.9 Hz</td><td>1.17</td><td>2.0 mm</td><td>14.0 mm</td><td>0</td><td>2.59 mm</td><td>2.58 V</td><td>3.33 µW</td></tr>
+<tr><td>Poster as drawn</td><td>95 mm</td><td>Magnets captured</td><td>19.9 Hz</td><td>22.2 Hz</td><td>1.12</td><td>2.0 mm</td><td>15.1 mm</td><td>0</td><td>3.90 mm</td><td>4.18 V</td><td>8.69 µW</td></tr>
+<tr><td>Poster as drawn</td><td>105 mm</td><td>Magnets captured</td><td>16.4 Hz</td><td>17.4 Hz</td><td>1.06</td><td>2.0 mm</td><td>16.2 mm</td><td>0</td><td>6.67 mm</td><td>7.92 V</td><td>31.16 µW</td></tr>
+<tr><td>Corrected gap</td><td>85 mm</td><td>Not plucking</td><td>24.6 Hz</td><td>28.9 Hz</td><td>1.17</td><td>21.4 mm</td><td>14.0 mm</td><td>0</td><td>0.52 mm</td><td>2.54 V</td><td>3.20 µW</td></tr>
+<tr><td>Corrected gap</td><td>95 mm</td><td>Not plucking</td><td>19.9 Hz</td><td>22.2 Hz</td><td>1.12</td><td>23.7 mm</td><td>15.1 mm</td><td>0</td><td>1.02 mm</td><td>3.97 V</td><td>7.81 µW</td></tr>
+<tr><td>Corrected gap</td><td>105 mm</td><td>Not plucking</td><td>16.4 Hz</td><td>17.4 Hz</td><td>1.06</td><td>25.4 mm</td><td>16.2 mm</td><td>0</td><td>2.62 mm</td><td>7.47 V</td><td>27.89 µW</td></tr>
+<tr><td>Redesign</td><td>85 mm</td><td>Plucking</td><td>16.1 Hz</td><td>25.7 Hz</td><td>1.60</td><td>37.3 mm</td><td>24.8 mm</td><td>16</td><td>1.04 mm</td><td>3.22 V</td><td>3.98 µW</td></tr>
+<tr><td>Redesign</td><td>95 mm</td><td>Plucking</td><td>16.4 Hz</td><td>22.2 Hz</td><td>1.35</td><td>34.0 mm</td><td>22.9 mm</td><td>16</td><td>1.36 mm</td><td>3.57 V</td><td>5.68 µW</td></tr>
+<tr class="hl"><td>Redesign</td><td>105 mm</td><td>Plucking</td><td>16.1 Hz</td><td>18.0 Hz</td><td>1.12</td><td>30.7 mm</td><td>21.3 mm</td><td>16</td><td>3.08 mm</td><td>7.72 V</td><td>28.68 µW</td></tr></tbody></table>
+<h3>Poster coupling</h3>
+<table class="t small"><thead><tr><th>Design</th><th>Piezo</th><th>Status</th><th>Driver f</th><th>Piezo f</th><th>Cycles / pluck</th><th>Min gap</th><th>Snap gap</th><th>Plucks / s</th><th>Piezo tip</th><th>V peak</th><th>Power</th></tr></thead><tbody>
+<tr><td>Poster as drawn</td><td>85 mm</td><td>Magnets captured</td><td>24.6 Hz</td><td>28.9 Hz</td><td>1.17</td><td>2.0 mm</td><td>14.0 mm</td><td>0</td><td>2.25 mm</td><td>5.85 V</td><td>17.11 µW</td></tr>
+<tr><td>Poster as drawn</td><td>95 mm</td><td>Magnets captured</td><td>19.9 Hz</td><td>22.2 Hz</td><td>1.12</td><td>2.0 mm</td><td>15.1 mm</td><td>0</td><td>3.03 mm</td><td>6.94 V</td><td>24.05 µW</td></tr>
+<tr><td>Poster as drawn</td><td>105 mm</td><td>Magnets captured</td><td>16.4 Hz</td><td>17.4 Hz</td><td>1.06</td><td>2.0 mm</td><td>16.2 mm</td><td>0</td><td>4.10 mm</td><td>7.89 V</td><td>31.12 µW</td></tr>
+<tr><td>Corrected gap</td><td>85 mm</td><td>Not plucking</td><td>24.6 Hz</td><td>28.9 Hz</td><td>1.17</td><td>21.4 mm</td><td>14.0 mm</td><td>0</td><td>0.19 mm</td><td>5.76 V</td><td>16.29 µW</td></tr>
+<tr><td>Corrected gap</td><td>95 mm</td><td>Not plucking</td><td>19.9 Hz</td><td>22.2 Hz</td><td>1.12</td><td>23.8 mm</td><td>15.1 mm</td><td>0</td><td>0.20 mm</td><td>6.79 V</td><td>21.05 µW</td></tr>
+<tr><td>Corrected gap</td><td>105 mm</td><td>Not plucking</td><td>16.4 Hz</td><td>17.4 Hz</td><td>1.06</td><td>25.6 mm</td><td>16.2 mm</td><td>0</td><td>0.21 mm</td><td>7.64 V</td><td>25.69 µW</td></tr>
+<tr><td>Redesign</td><td>85 mm</td><td>Plucking</td><td>16.1 Hz</td><td>25.7 Hz</td><td>1.60</td><td>37.5 mm</td><td>24.8 mm</td><td>17</td><td>0.77 mm</td><td>16.43 V</td><td>96.69 µW</td></tr>
+<tr><td>Redesign</td><td>95 mm</td><td>Plucking</td><td>16.4 Hz</td><td>22.2 Hz</td><td>1.35</td><td>34.4 mm</td><td>22.9 mm</td><td>16</td><td>0.72 mm</td><td>14.49 V</td><td>72.02 µW</td></tr>
+<tr class="hl"><td>Redesign</td><td>105 mm</td><td>Plucking</td><td>16.1 Hz</td><td>18.0 Hz</td><td>1.12</td><td>31.7 mm</td><td>21.3 mm</td><td>17</td><td>0.65 mm</td><td>13.09 V</td><td>57.90 µW</td></tr></tbody></table>
+<p class="note">Min gap and V peak are over the last 1 s. Power is the average into 1 MΩ.</p>
+
+
+<h2 class="pb">10. Follow-up: a piezo on the driver beam</h2>
+<p>In the 105 mm design at 2 m/s², the shaking puts about 2.3 mW into the device, and almost all of it is lost as heat in the driver beam (2.24 mW in our model; the paper's audit gives 2.1 mW). The piezo beam turns only 28 µW of it into electricity. So we tested putting the same 40 × 5 mm bimorph on the driver too.</p>
+<p>For each placement, the model:</p>
+<ul>
+<li>recomputes the driver's stiffness as a stepped beam;</li>
+<li>estimates its coupling from k<sub>31</sub> and the bimorph's share of bending energy;</li>
+<li>adds the bimorph's mass weighted by the bending shape;</li>
+<li>re-tunes the dead tip mass so the driver stays at its design frequency;</li>
+<li>drives the driver bimorph into its own matched load (about 1.3 MΩ for a 40 mm bimorph, more for shorter ones).</li>
+</ul>
+<p>The catch is strain. The driver swings about 5 mm, and a bimorph at the clamp would bend to 1,000–1,700 µε, above the roughly 500 µε that PZT survives over many cycles. So the table shows two options for each length: at the clamp with no strain limit, and the best placement that stays under 500 µε.</p>
+<table class="t small"><thead><tr><th>Config</th><th>Driver bimorph</th><th>Bimorph position from clamp (mm)</th><th>driver damping loss (mW)</th><th>κ² driver</th><th>P driver bimorph (µW)</th><th>P piezo (µW)</th><th>driver tip (mm)</th><th>V peak (driver)</th><th>PZT strain (µε)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>no driver bimorph</td><td>-</td><td>4.21</td><td>-</td><td>-</td><td>3.8</td><td>5.61</td><td>3.29</td><td>-</td></tr>
+<tr><td>85 mm</td><td>at clamp, no strain limit</td><td>0.0-40.0</td><td>19.71</td><td>0.0168</td><td>5483</td><td>2.1</td><td>5.08</td><td>125.4</td><td>1699</td></tr>
+<tr class="hl"><td>85 mm</td><td>best within 500 ue strain</td><td>10.0-30.0</td><td>7.66</td><td>0.0023</td><td>291</td><td>3.8</td><td>5.97</td><td>41.1</td><td>481</td></tr>
+<tr><td>95 mm</td><td>no driver bimorph</td><td>-</td><td>3.29</td><td>-</td><td>-</td><td>5.3</td><td>5.43</td><td>3.60</td><td>-</td></tr>
+<tr><td>95 mm</td><td>at clamp, no strain limit</td><td>0.0-20.0</td><td>13.43</td><td>0.0132</td><td>2943</td><td>3.2</td><td>5.12</td><td>129.4</td><td>1552</td></tr>
+<tr class="hl"><td>95 mm</td><td>best within 500 ue strain</td><td>10.0-30.0</td><td>5.71</td><td>0.0021</td><td>202</td><td>5.1</td><td>5.75</td><td>34.0</td><td>454</td></tr>
+<tr><td>105 mm</td><td>no driver bimorph</td><td>-</td><td>2.24</td><td>-</td><td>-</td><td>27.8</td><td>5.16</td><td>7.92</td><td>-</td></tr>
+<tr><td>105 mm</td><td>at clamp, no strain limit</td><td>0.0-40.0</td><td>10.60</td><td>0.0138</td><td>2421</td><td>17.1</td><td>5.17</td><td>83.5</td><td>1060</td></tr>
+<tr class="hl"><td>105 mm</td><td>best within 500 ue strain</td><td>2.5-22.5</td><td>5.35</td><td>0.0038</td><td>340</td><td>24.9</td><td>5.66</td><td>44.6</td><td>483</td></tr></tbody></table>
+<p class="note">Strain is at the outer PZT surface at the peak driver deflection in steady shaking at 2 m/s², driver frequency. "P piezo" is the original piezo beam's output in the same run.</p>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/11_driver_bimorph.png"><figcaption><b>Figure 13.</b> Every placement tried: driver-bimorph power against peak PZT strain. Colour is the distance from the clamp. The dotted line is what the piezo beam makes on its own.</figcaption></figure>
+<div class="box"><h3>What this means for the design</h3>
+<p>Even with the strain limit, a bimorph 10–30 mm from the driver clamp makes 200–340 µW, which is 10–80 times the piezo beam's output. The driver is where the energy is. The magnets still help the piezo beam a little, but a two-transducer design (or a single tuned beam with a transducer) would be the better design. The stepped-beam and coupling numbers are estimates, so a measured coupling on a real driver would be the first thing to check.</p></div>
+
+<h2 class="pb">11. Gain law and design under uncertainty</h2>
+<p>The "gain" is the power with magnets divided by the power of the same beams with the magnets removed, at the driver's own resonance. Our paper's gain law (eq. 20) gives it in closed form:</p>
+<p style="text-align:center">G ≈ (1 + q²) · (Δ / (Δ − k<sub>m</sub>))², with q = k<sub>m</sub> / (2 ζ<sub>d</sub> m<sub>bp</sub> ω<sub>d</sub>²)</p>
+<p>Here k<sub>m</sub> = 4C/d<sub>e</sub>⁵ is the magnets' coupling stiffness and Δ = k<sub>p</sub> − m<sub>p</sub>ω<sub>d</sub>². We first checked the law and the exact linear two-mode model it comes from against the full nonlinear simulation on 120 random designs from the search grid:</p>
+<table class="t "><thead><tr><th>Predictor</th><th>designs</th><th>median predicted / simulated</th><th>median abs. error</th><th>90th pct abs. error</th><th>R² (log gain)</th></tr></thead><tbody>
+<tr><td>Gain law, eq. 20 (closed form)</td><td>120</td><td>1.89</td><td>89%</td><td>1117%</td><td>-3.49</td></tr>
+<tr><td>Exact linear two-mode model</td><td>120</td><td>0.86</td><td>14%</td><td>43%</td><td>0.90</td></tr>
+<tr><td>Gain law, designs with simulated gain &lt; 6</td><td>33</td><td>-</td><td>96%</td><td>-</td><td>-</td></tr></tbody></table>
+<p>The closed-form law is fine near our current design (3.9 against 4.8 simulated for 105 mm). Across the whole design space it is often far too high, because it assumes weak coupling. The exact linear model is accurate (median error 14%), so we used it as the objective.</p>
+<p>We then re-ran the design search with the gap safety factor as an extra variable (1.2–2.5). Each design was scored over 400 random draws, using the paper's spreads:</p>
+<ul>
+<li>driver damping 0.015–0.05;</li>
+<li>piezo damping 0.01–0.03;</li>
+<li>both stiffnesses and the magnet constant ±7% (1σ);</li>
+<li>gap ±0.5 mm;</li>
+<li>coupling θ within a factor of 2.</li>
+</ul>
+<p>A design is allowed only if its closest approach stays at least 1.2 times the snap gap in 95% of draws. The best designs were then re-checked on 48 draws with the full nonlinear simulation.</p>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>gain, nominal</th><th>median gain</th><th>5th pct gain</th><th>median P (µW)</th><th>below 1.5x snap</th><th>below 1.2x snap</th><th>median gain, nonlinear</th><th>median P, nonlinear (µW)</th><th>latched, sim</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>current redesign</td><td>9.9</td><td>3.2</td><td>1.9</td><td>1.1</td><td>11%</td><td>0.0%</td><td>3.1</td><td>1.0</td><td>0%</td></tr>
+<tr><td>85 mm</td><td>max median gain</td><td>52.2</td><td>14.6</td><td>6.0</td><td>24.9</td><td>100%</td><td>1.8%</td><td>13.2</td><td>21.1</td><td>0%</td></tr>
+<tr class="hl"><td>85 mm</td><td>max median power</td><td>20.2</td><td>7.2</td><td>0.4</td><td>60.3</td><td>100%</td><td>0.0%</td><td>8.9</td><td>57.9</td><td>0%</td></tr>
+<tr><td>85 mm</td><td>max median gain-law value</td><td>37.9</td><td>11.6</td><td>1.7</td><td>40.3</td><td>100%</td><td>0.8%</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>95 mm</td><td>current redesign</td><td>5.4</td><td>2.2</td><td>1.6</td><td>1.7</td><td>11%</td><td>0.0%</td><td>2.2</td><td>1.5</td><td>0%</td></tr>
+<tr><td>95 mm</td><td>max median gain</td><td>26.1</td><td>8.2</td><td>3.7</td><td>25.4</td><td>98%</td><td>2.0%</td><td>7.3</td><td>25.4</td><td>0%</td></tr>
+<tr class="hl"><td>95 mm</td><td>max median power</td><td>8.0</td><td>3.4</td><td>0.3</td><td>67.7</td><td>99%</td><td>0.2%</td><td>5.5</td><td>77.3</td><td>0%</td></tr>
+<tr><td>95 mm</td><td>max median gain-law value</td><td>4.4</td><td>3.1</td><td>0.6</td><td>7.8</td><td>100%</td><td>5.0%</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>105 mm</td><td>current redesign</td><td>3.2</td><td>1.9</td><td>1.5</td><td>9.2</td><td>10%</td><td>0.0%</td><td>1.9</td><td>9.3</td><td>0%</td></tr>
+<tr><td>105 mm</td><td>max median gain</td><td>12.8</td><td>4.4</td><td>0.5</td><td>42.4</td><td>85%</td><td>1.5%</td><td>4.4</td><td>40.7</td><td>0%</td></tr>
+<tr class="hl"><td>105 mm</td><td>max median power</td><td>5.5</td><td>2.4</td><td>0.3</td><td>55.6</td><td>83%</td><td>1.2%</td><td>3.9</td><td>85.2</td><td>0%</td></tr>
+<tr><td>105 mm</td><td>max median gain-law value</td><td>5.3</td><td>3.7</td><td>0.5</td><td>22.7</td><td>100%</td><td>3.8%</td><td>-</td><td>-</td><td>-</td></tr></tbody></table>
+<table class="t small"><thead><tr><th>Config</th><th>Design</th><th>driver L (mm)</th><th>t (mm)</th><th>b (mm)</th><th>driver magnet (mm)</th><th>added mass (g)</th><th>piezo magnet (mm)</th><th>gap safety factor</th><th>closest approach (mm)</th><th>rest gap (mm)</th><th>f<sub>d</sub> (Hz)</th><th>f<sub>p</sub> (Hz)</th><th>margin</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>current redesign</td><td>56</td><td>1.5</td><td>10</td><td>12.7 x 8</td><td>2</td><td>6 x 3.0</td><td>1.5 (two-body)</td><td>37.2</td><td>43.8</td><td>16.1</td><td>25.7</td><td>1.71</td></tr>
+<tr><td>85 mm</td><td>max median gain</td><td>98</td><td>3.0</td><td>20</td><td>12.7 x 8</td><td>3</td><td>4 x 3.0</td><td>1.35</td><td>27.2</td><td>30.2</td><td>24.8</td><td>29.0</td><td>2.65</td></tr>
+<tr class="hl"><td>85 mm</td><td>max median power</td><td>102</td><td>3.0</td><td>20</td><td>12.7 x 8</td><td>2</td><td>6 x 3.0</td><td>1.35</td><td>32.1</td><td>35.1</td><td>24.3</td><td>25.7</td><td>3.07</td></tr>
+<tr><td>85 mm</td><td>max median gain-law value</td><td>88</td><td>3.0</td><td>15</td><td>12.7 x 8</td><td>3</td><td>6 x 1.5</td><td>1.35</td><td>27.8</td><td>30.5</td><td>25.9</td><td>28.6</td><td>2.72</td></tr>
+<tr><td>95 mm</td><td>current redesign</td><td>40</td><td>1.0</td><td>10</td><td>12.7 x 8</td><td>0</td><td>5 x 2.0</td><td>1.5 (two-body)</td><td>34.3</td><td>40.7</td><td>16.4</td><td>22.2</td><td>1.68</td></tr>
+<tr><td>95 mm</td><td>max median gain</td><td>112</td><td>3.0</td><td>20</td><td>12.7 x 8</td><td>3</td><td>5 x 1.5</td><td>1.35</td><td>28.2</td><td>32.7</td><td>20.1</td><td>22.8</td><td>2.76</td></tr>
+<tr class="hl"><td>95 mm</td><td>max median power</td><td>118</td><td>3.0</td><td>20</td><td>12.7 x 8</td><td>2</td><td>6 x 3.0</td><td>1.35</td><td>35.0</td><td>39.6</td><td>19.3</td><td>20.0</td><td>3.35</td></tr>
+<tr><td>95 mm</td><td>max median gain-law value</td><td>48</td><td>1.0</td><td>10</td><td>8.0 x 8</td><td>0</td><td>5 x 3.0</td><td>1.20</td><td>25.6</td><td>30.1</td><td>19.5</td><td>21.2</td><td>3.22</td></tr>
+<tr><td>105 mm</td><td>current redesign</td><td>66</td><td>1.5</td><td>10</td><td>12.7 x 6</td><td>0</td><td>4 x 2.0</td><td>1.5 (two-body)</td><td>32.0</td><td>38.6</td><td>16.1</td><td>18.0</td><td>1.61</td></tr>
+<tr><td>105 mm</td><td>max median gain</td><td>116</td><td>3.0</td><td>15</td><td>12.7 x 8</td><td>3</td><td>4 x 2.0</td><td>1.35</td><td>29.7</td><td>35.9</td><td>16.8</td><td>18.0</td><td>2.90</td></tr>
+<tr class="hl"><td>105 mm</td><td>max median power</td><td>120</td><td>3.0</td><td>20</td><td>12.7 x 8</td><td>3</td><td>3 x 2.0</td><td>1.35</td><td>26.3</td><td>31.4</td><td>18.0</td><td>18.5</td><td>2.63</td></tr>
+<tr><td>105 mm</td><td>max median gain-law value</td><td>68</td><td>1.5</td><td>10</td><td>10.0 x 8</td><td>0</td><td>4 x 2.0</td><td>1.20</td><td>24.7</td><td>30.7</td><td>16.9</td><td>18.0</td><td>3.72</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/12_gain_law_robust.png"><figcaption><b>Figure 14.</b> Left: the gain law (x) and the exact linear model (o) against the nonlinear simulation. Middle and right: gain and power over 400 draws for the current redesign (dotted), the max-median-gain design (solid) and the max-median-power design (dashed).</figcaption></figure>
+<div class="box"><h3>What changed and why</h3>
+<p>Both optimised designs use a longer, thicker, wider driver with the large magnet and a tighter gap (1.35× snap instead of 1.5×). This raises the magnetic coupling while keeping the closest approach above 1.2× snap in at least 95% of draws. The median gain at 105 mm rises from 1.9 to 4.4, and the median power from 9 to 56 µW (linear model).</p>
+<p>Maximising gain and maximising power pick different designs. A high gain can come from a weak no-magnet baseline, so <b>median power is the better target</b>. The gain law on its own picks designs that the exact model rates much lower (row "max median gain-law value").</p></div>
+
+<h2 class="pb">12. Sweep-past magnet geometry</h2>
+<p>In the current layout the magnets face each other along the shaking direction, so the pull fades slowly as the driver backs away. In a sweep-past layout the two magnets sit side by side across a small sideways gap, and the driver magnet slides past the piezo magnet. The force along the motion then rises, flips sign and dies within a few millimetres, so the release is fast.</p>
+<p>Point dipoles are not accurate at a few millimetres, so we built a finite-size force model: each cylinder is split into 300 small dipoles. It agrees with the point-dipole formula far away and is lower up close, as expected for flat magnets:</p>
+<table class="t "><thead><tr><th>centre distance (mm)</th><th>sub-dipole model (mN)</th><th>point dipole C/d⁴ (mN)</th></tr></thead><tbody>
+<tr><td>10</td><td>102.216</td><td>128.344</td></tr>
+<tr><td>15</td><td>22.830</td><td>25.352</td></tr>
+<tr><td>20</td><td>7.557</td><td>8.021</td></tr>
+<tr><td>30</td><td>1.543</td><td>1.584</td></tr></tbody></table>
+<p>Search: driver magnet 3–8 mm across and 1–3 mm thick (dead mass keeps the driver frequency), gaps 1.5–8 mm, rest offset 0 or 3 mm. Rules applied:</p>
+<ul>
+<li>the pull must be at least 1.5 × F<sub>req</sub>;</li>
+<li>the sideways attraction must stay 1.5 times below the beams' sideways stiffness;</li>
+<li>the driver must clear the force peak by 20% of its stroke, so it actually lets go.</li>
+</ul>
+<p>The 12.7 mm magnets of the coaxial redesign are far too strong here: they drag the piezo along the whole stroke.</p>
+<table class="t small"><thead><tr><th>Case</th><th>Pick</th><th>driver magnet (mm)</th><th>gap (mm)</th><th>static pull (mm)</th><th>sideways snap margin</th><th>release / T_p</th><th>ring / pull</th><th>f<sub>d</sub> / f<sub>p</sub> (Hz)</th><th>P avg (µW)</th><th>voltage energy near f<sub>p</sub></th></tr></thead><tbody>
+<tr><td>85 mm</td><td>most power</td><td>3 x 1</td><td>6.0</td><td>0.97</td><td>36.5</td><td>0.34</td><td>0.94</td><td>16.1 / 25.7</td><td>11.5</td><td>0.0%</td></tr>
+<tr><td>85 mm</td><td>most energy off the f<sub>d</sub> harmonics</td><td>3 x 1</td><td>6.0</td><td>0.97</td><td>36.5</td><td>0.34</td><td>0.94</td><td>16.1 / 25.7</td><td>11.5</td><td>0.0%</td></tr>
+<tr><td>95 mm</td><td>most power</td><td>4 x 1</td><td>6.0</td><td>1.53</td><td>29.2</td><td>0.34</td><td>0.95</td><td>16.4 / 22.2</td><td>15.3</td><td>0.0%</td></tr>
+<tr><td>95 mm</td><td>most energy off the f<sub>d</sub> harmonics</td><td>3 x 2</td><td>6.0</td><td>1.49</td><td>30.1</td><td>0.35</td><td>0.94</td><td>16.4 / 22.2</td><td>15.3</td><td>0.0%</td></tr>
+<tr class="hl"><td>105 mm</td><td>most power</td><td>4 x 1</td><td>6.0</td><td>1.59</td><td>24.9</td><td>0.22</td><td>0.96</td><td>16.1 / 18.0</td><td>59.1</td><td>9.2%</td></tr>
+<tr><td>105 mm</td><td>most energy off the f<sub>d</sub> harmonics</td><td>4 x 1</td><td>6.0</td><td>1.59</td><td>24.9</td><td>0.05</td><td>1.01</td><td>16.1 / 18.0</td><td>56.4</td><td>9.5%</td></tr>
+<tr><td>60 mm piezo + 105 mm driver</td><td>most power</td><td>3 x 3</td><td>2.0</td><td>2.76</td><td>3.3</td><td>0.06</td><td>0.28</td><td>16.1 / 61.2</td><td>0.6</td><td>0.0%</td></tr>
+<tr><td>60 mm piezo + 105 mm driver</td><td>most energy off the f<sub>d</sub> harmonics</td><td>3 x 2</td><td>2.0</td><td>2.40</td><td>3.7</td><td>0.15</td><td>0.46</td><td>16.1 / 61.2</td><td>0.6</td><td>0.0%</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/13_sweep_past.png"><figcaption><b>Figure 15.</b> Left: force on the piezo as the driver magnet slides past. Middle: one pass at the driver’s peak speed, so the piezo rings after a fast release. Right: steady power at 2 m/s², coaxial against sweep-past.</figcaption></figure>
+<div class="box"><h3>Result</h3>
+<p>Sweep-past gives the "true pluck" the review asked for in a single pass: release in 0.22 of a piezo period and ring/pull 0.96, against 0.56 and 0.73 for the coaxial layout. It also roughly doubles or triples steady power (59 µW at 105 mm against 28 µW).</p>
+<p>But with the piezo at 18–26 Hz the driver comes back before the ring builds up, so almost all the voltage is still at the shaking frequency and its harmonics. A 60 mm piezo beam at 61 Hz does ring between passes (about 8% of the energy off the shake harmonics), but it is so stiff that the magnets barely move it and the power collapses to 0.6 µW. True up-conversion needs a stiff, high-frequency piezo and a much stronger pluck, which this size of device cannot give safely.</p></div>
+
+<h2 class="pb">13. Recorded vehicle vibration</h2>
+<p>Instead of a steady tone, we drove the model with a real car recording: a phone accelerometer on a route with asphalt and cobblestone (Witulska &amp; Wyłomańska, CC BY 4.0). We used the vertical axis, band-passed to 3–45 Hz. Segments:</p>
+<ul>
+<li>asphalt, 280–306 s: 0.54 m/s² rms;</li>
+<li>cobblestone, 210–270 s: 2.18 m/s² rms.</li>
+</ul>
+<p>For comparison, "synthetic noise" is Gaussian noise with the same band and rms, like the paper's random-vibration test. The phone was inside the car, so this shows the kind of spectrum, not the exact level at a mounting point.</p>
+<table class="t small"><thead><tr><th>Piezo</th><th>Design</th><th>Asphalt, recorded (µW)</th><th>Cobblestone, recorded (µW)</th><th>Cobblestone, synthetic noise (µW)</th><th>Driver PZT strain, cobblestone (µε)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>Magnets removed</td><td>1.21</td><td>9.43</td><td>13.44</td><td>-</td></tr>
+<tr><td>85 mm</td><td>Redesign (coaxial)</td><td>1.40</td><td>9.69</td><td>14.80</td><td>-</td></tr>
+<tr><td>85 mm</td><td>Sweep-past</td><td>0.51</td><td>9.66</td><td>10.44</td><td>-</td></tr>
+<tr class="hl"><td>85 mm</td><td>Redesign + driver bimorph</td><td>2.59</td><td>24.74</td><td>34.35</td><td>340</td></tr>
+<tr><td>95 mm</td><td>Magnets removed</td><td>0.75</td><td>7.01</td><td>15.17</td><td>-</td></tr>
+<tr><td>95 mm</td><td>Redesign (coaxial)</td><td>0.94</td><td>8.95</td><td>16.21</td><td>-</td></tr>
+<tr><td>95 mm</td><td>Sweep-past</td><td>0.36</td><td>5.48</td><td>9.13</td><td>-</td></tr>
+<tr class="hl"><td>95 mm</td><td>Redesign + driver bimorph</td><td>1.83</td><td>19.47</td><td>29.03</td><td>311</td></tr>
+<tr><td>105 mm</td><td>Magnets removed</td><td>0.64</td><td>9.01</td><td>13.94</td><td>-</td></tr>
+<tr><td>105 mm</td><td>Redesign (coaxial)</td><td>0.87</td><td>11.60</td><td>18.12</td><td>-</td></tr>
+<tr><td>105 mm</td><td>Sweep-past</td><td>0.56</td><td>6.39</td><td>8.25</td><td>-</td></tr>
+<tr class="hl"><td>105 mm</td><td>Redesign + driver bimorph</td><td>2.33</td><td>29.43</td><td>40.65</td><td>335</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/14_vehicle.png"><figcaption><b>Figure 16.</b> The car recording, its spectrum with our beam frequencies marked, and the 105 mm piezo voltage on cobblestone with and without magnets.</figcaption></figure>
+<div class="box"><h3>Result</h3>
+<p>The road spectrum is broad, with no strong peak at 16 Hz, so each resonance catches only a slice of it. The magnets add 1.03–1.29× on cobblestone (asphalt 1.16–1.36×), close to the synthetic-noise result (1.07–1.30×) and to the paper's 1.35×.</p>
+<p>No run had magnet contact. The driver bimorph (Section 10 placement) adds 2.2–2.6× on the same road, and its peak strain on cobblestone stays at 311–340 µε, under the 500 µε limit. A rougher road or a harder mounting point could still exceed it, so a travel stop is a sensible safeguard.</p></div>
+
+<h2 class="pb">14. Proposed first experiment</h2>
+<p>This is the cheapest test of the model, and it is safe: a low-amplitude frequency sweep on a shaker. At 0.5 m/s² the driver tip moves only about 1.5 mm (105 mm design), and the closest gap stays above 36 mm.</p>
+<ol>
+<li><b>Ring-down first.</b> Clamp each beam alone and flick it. Measure its natural frequency and damping from the decay (log decrement). Put these into the model before comparing.</li>
+<li><b>Sweep with magnets.</b> Mount both beams on the shaker at the design rest gap. Hold a = 0.1, 0.2, 0.3 and 0.5 m/s² (phone or accelerometer on the base) and step 12–30 Hz in 0.1 Hz steps, waiting 5 s at each. Record the piezo voltage amplitude on a scope (1 MΩ input = our load).</li>
+<li><b>Sweep with dummy masses.</b> Swap both magnets for non-magnetic slugs of the same mass and repeat. Same mass means the same frequencies, so the ratio is the gain.</li>
+<li><b>Compare</b> with the table below.</li>
+</ol>
+<p>Pass criteria:</p>
+<ul>
+<li>both mode frequencies within ±0.5 Hz of the re-predicted values (read the lower mode from the driver tip's motion, e.g. slow-motion video against a ruler, because in the 105 mm design it shows only as a shoulder in the voltage);</li>
+<li>a voltage dip where the magnets cancel the base shaking (the "Voltage dip" column): this sharp feature is easy to find and is a direct sign of the magnetic coupling;</li>
+<li>gain at f<sub>d</sub> within ±30%;</li>
+<li>gain the same at every amplitude to within 10% (the model says it barely changes from 0.1 to 0.5 m/s²).</li>
+</ul>
+<table class="t small"><thead><tr><th>Piezo</th><th>a (m/s²)</th><th>Lower mode, driver peak (Hz)</th><th>Upper mode, voltage peak (Hz)</th><th>Theory modes (Hz)</th><th>Voltage dip (Hz)</th><th>V peak at f<sub>d</sub>, magnets (mV)</th><th>V peak at f<sub>d</sub>, dummy masses (mV)</th><th>Power gain at f<sub>d</sub></th><th>Gain law</th><th>Driver tip at f<sub>d</sub> (mm)</th><th>Closest gap (mm)</th></tr></thead><tbody>
+<tr><td>85 mm</td><td>0.1</td><td>15.9</td><td>25.3</td><td>15.94 / 25.18</td><td>15.2</td><td>135</td><td>42</td><td>10.15</td><td>10.07</td><td>0.48</td><td>42.6</td></tr>
+<tr><td>85 mm</td><td>0.2</td><td>15.9</td><td>25.3</td><td>15.94 / 25.18</td><td>15.2</td><td>271</td><td>84</td><td>10.15</td><td>10.07</td><td>0.75</td><td>42.4</td></tr>
+<tr><td>85 mm</td><td>0.3</td><td>15.9</td><td>25.3</td><td>15.94 / 25.18</td><td>15.2</td><td>410</td><td>126</td><td>10.16</td><td>10.07</td><td>1.02</td><td>42.1</td></tr>
+<tr><td>85 mm</td><td>0.5</td><td>15.9</td><td>25.3</td><td>15.94 / 25.18</td><td>15.2</td><td>695</td><td>209</td><td>10.22</td><td>10.07</td><td>1.57</td><td>41.4</td></tr>
+<tr><td>95 mm</td><td>0.1</td><td>16.3</td><td>21.8</td><td>16.26 / 21.71</td><td>15.7</td><td>159</td><td>63</td><td>6.36</td><td>5.68</td><td>0.43</td><td>39.5</td></tr>
+<tr><td>95 mm</td><td>0.2</td><td>16.3</td><td>21.8</td><td>16.26 / 21.71</td><td>15.7</td><td>319</td><td>126</td><td>6.36</td><td>5.68</td><td>0.70</td><td>39.4</td></tr>
+<tr><td>95 mm</td><td>0.3</td><td>16.3</td><td>21.8</td><td>16.26 / 21.71</td><td>15.7</td><td>480</td><td>188</td><td>6.37</td><td>5.68</td><td>0.96</td><td>39.0</td></tr>
+<tr><td>95 mm</td><td>0.5</td><td>16.3</td><td>21.8</td><td>16.26 / 21.71</td><td>15.7</td><td>807</td><td>314</td><td>6.41</td><td>5.68</td><td>1.50</td><td>38.3</td></tr>
+<tr class="hl"><td>105 mm</td><td>0.1</td><td>16.0</td><td>17.7</td><td>16.00 / 17.65</td><td>15.6</td><td>340</td><td>166</td><td>4.18</td><td>3.89</td><td>0.40</td><td>37.6</td></tr>
+<tr class="hl"><td>105 mm</td><td>0.2</td><td>16.0</td><td>17.7</td><td>16.00 / 17.65</td><td>15.6</td><td>680</td><td>333</td><td>4.19</td><td>3.89</td><td>0.68</td><td>37.3</td></tr>
+<tr class="hl"><td>105 mm</td><td>0.3</td><td>16.0</td><td>17.7</td><td>16.00 / 17.65</td><td>15.6</td><td>1023</td><td>499</td><td>4.20</td><td>3.89</td><td>0.96</td><td>36.9</td></tr>
+<tr class="hl"><td>105 mm</td><td>0.5</td><td>16.0</td><td>17.7</td><td>16.00 / 17.65</td><td>15.6</td><td>1715</td><td>832</td><td>4.24</td><td>3.89</td><td>1.51</td><td>36.2</td></tr></tbody></table>
+<figure style="width:100%"><img src="file:///Users/sidharth/engineeringdesign2026-2027/harvester_sim/plots/15_experiment_prediction.png"><figcaption><b>Figure 17.</b> Predicted sweep for each beam length: power divided by a², so the curves for different amplitudes overlap if the device behaves linearly. Red: magnets; grey: dummy masses. Dotted lines: theory mode frequencies.</figcaption></figure>
+<p class="note">The two modes are the magnetically coupled pair: the lower is driver-led, the upper piezo-led. For 105 mm the theory gives 16.00 and 17.65 Hz (the paper reports 15.97 and 17.64 Hz).</p>
+
+<h2 class="pb">15. Limits of the model</h2>
+<ul>
+<li>Each beam is one lumped spring–mass with one mode.</li>
+<li>The point-magnet force law is less accurate closer than two magnet diameters. The redesign keeps the gap above that.</li>
+<li>Section C's EI and the segment lengths are fitted to the poster, not measured.</li>
+<li>The coupling θ is an estimate and could be off by about 2×.</li>
+<li>Damping is 0.015 for both beams. PETG may be lossier (0.03–0.05), which would cut the driver swing.</li>
+<li>Contact is a stiff spring, so stuck-magnet behaviour is only roughly right.</li>
+<li>Not included: PETG creep, how the magnets are glued on, the riser block, and gravity sag.</li>
+<li>The driver-bimorph coupling uses the same k<sub>31</sub> energy-share estimate as the piezo beam, and the 500 µε limit is a common design value for PZT, not a measured one.</li>
+<li>The sweep-past model ignores the beams' twisting and sideways motion (it only checks sideways snap), and it treats the two magnets as perfectly lined up along the beams.</li>
+<li>The Monte Carlo spreads are judgements, not measurements. The car recording comes from a phone inside the cabin and has no mounting-point transfer function.</li>
+</ul>
+</body></html>

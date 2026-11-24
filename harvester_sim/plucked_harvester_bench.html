@@ -1,0 +1,517 @@
+<title>Plucked Harvester Bench</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: lab bench — to-scale side view (drafting sheet) beside an instrument panel, strip-chart recorder underneath */
+:root{
+  --paper:#EEF1EE; --sheet:#FAFBF9; --ink:#1C2321; --ink-2:#5A6561; --rule:#CCD4CF; --grid:#E3E8E4;
+  --petg:#C4850F; --pzt:#9B2C2C; --steel:#6E7980; --steel-2:#A9B2B7; --volt:#1D6C88;
+  --ok:#2C7A4B; --warn:#A86A00; --bad:#B3261E; --snap:rgba(179,38,30,.10);
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121715; --sheet:#181F1C; --ink:#E2E8E4; --ink-2:#97A39E; --rule:#2E3834; --grid:#212A26;
+  --petg:#E3A63A; --pzt:#DE6A62; --steel:#8C979D; --steel-2:#59646A; --volt:#5DB9D8;
+  --ok:#5CC28A; --warn:#E6A93B; --bad:#F06A5E; --snap:rgba(240,106,94,.13); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121715; --sheet:#181F1C; --ink:#E2E8E4; --ink-2:#97A39E; --rule:#2E3834; --grid:#212A26;
+  --petg:#E3A63A; --pzt:#DE6A62; --steel:#8C979D; --steel-2:#59646A; --volt:#5DB9D8;
+  --ok:#5CC28A; --warn:#E6A93B; --bad:#F06A5E; --snap:rgba(240,106,94,.13); color-scheme:dark}
+
+html,body{background:var(--paper)}
+body{color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:18px}
+header{display:grid;gap:4px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.lede{margin:4px 0 0;max-width:68ch;color:var(--ink-2)}
+
+.bench{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.bench{grid-template-columns:minmax(0,1fr)}}
+
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;position:relative;min-width:0}
+#stage{display:block;width:100%;aspect-ratio:16/9.4;max-width:100%}
+.leftcol{display:grid;gap:18px;min-width:0}
+.sheet-foot{display:flex;flex-wrap:wrap;gap:6px 16px;padding:10px 14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-2)}
+.key{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:8px;border-radius:1px;display:inline-block}
+
+.panel{display:grid;gap:14px;min-width:0}
+.status{border-radius:4px;padding:12px 14px;border:1px solid var(--rule);background:var(--sheet);display:grid;gap:4px}
+.pill{justify-self:start;font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 10px;border-radius:999px;color:var(--sheet);background:var(--ink-2)}
+.pill.ok{background:var(--ok)}.pill.warn{background:var(--warn)}.pill.bad{background:var(--bad)}
+.status p{margin:0;font-size:14px;color:var(--ink)}
+
+.readouts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.ro{background:var(--sheet);padding:8px 10px;display:grid;gap:0}
+.ro span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.ro b{font-family:var(--f-mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+fieldset{border:0;margin:0;padding:0;display:grid;gap:6px;min-width:0}
+legend,.lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);padding:0;margin-bottom:2px;display:flex;justify-content:space-between;gap:8px;width:100%}
+.lbl output{font-family:var(--f-mono);letter-spacing:0;text-transform:none;color:var(--ink);font-variant-numeric:tabular-nums}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.seg button{flex:1 1 auto;font:500 14px var(--f-body);color:var(--ink);background:var(--sheet);border:0;border-right:1px solid var(--rule);padding:7px 10px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.seg button:focus-visible,.btn:focus-visible,input:focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--pzt)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 14px var(--f-body);padding:8px 12px;border-radius:4px;border:1px solid var(--ink);background:var(--sheet);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--sheet)}
+.btn.small{padding:3px 8px;font-size:12px;font-weight:500;border-color:var(--rule)}
+.controls{display:grid;gap:14px;padding:14px;border:1px solid var(--rule);border-radius:4px;background:var(--sheet)}
+
+.recorder{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;min-width:0}
+.rec-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.rec-head h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:0;letter-spacing:.02em}
+.rec-head p{margin:0;font-size:13px;color:var(--ink-2)}
+#traces{display:block;width:100%;height:330px}
+
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:820px){.notes{grid-template-columns:minmax(0,1fr)}}
+.notes div{min-width:0}
+.notes h3{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0 0 4px;letter-spacing:.02em}
+.notes p{margin:0;font-size:14px;color:var(--ink-2);max-width:60ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">HS-EGSD-0192 · magnetically plucked piezo harvester · live lumped model</div>
+    <h1>Plucked Harvester Bench</h1>
+    <p class="lede">The driver cantilever swings on the shaking base, its magnet pulls the piezo cantilever toward it, then lets go as it swings away. Watch the gap, the piezo's ring, and the voltage. Same equations and parameters as <code>sim.py</code>.</p>
+  </header>
+
+  <section class="bench">
+   <div class="leftcol">
+    <div class="sheet">
+      <canvas id="stage" aria-label="Side view of the driver and piezo cantilevers lying sideways, with magnets"></canvas>
+      <div class="sheet-foot">
+        <span class="key"><i class="sw" style="background:var(--petg)"></i>PETG driver</span>
+        <span class="key"><i class="sw" style="background:var(--pzt)"></i>Piezo cantilever (bimorph shaded)</span>
+        <span class="key"><i class="sw" style="background:var(--snap);outline:1px dashed var(--bad)"></i>Snap zone: driver magnet here = magnets grab</span>
+        <span class="key" id="exagKey"></span>
+      </div>
+    </div>
+
+  <div class="recorder">
+    <div class="rec-head">
+      <h2>Strip chart</h2>
+      <p>Last 0.5 s of simulated time. Red ticks mark each pluck (force swing ≥ the force for a 0.5 mm pull).</p>
+    </div>
+    <canvas id="traces" aria-label="Scrolling traces of tip displacement, gap and voltage"></canvas>
+  </div>
+   </div>
+    <div class="panel">
+      <div class="status" aria-live="polite">
+        <span class="pill" id="pill">Starting</span>
+        <p id="statusText">Warming up the model.</p>
+      </div>
+
+      <div class="readouts">
+        <div class="ro"><span>Driver f<sub>n</sub></span><b id="r_fd">–</b></div>
+        <div class="ro"><span>Piezo f<sub>n</sub></span><b id="r_fp">–</b></div>
+        <div class="ro"><span>Piezo cycles / pluck</span><b id="r_cyc">–</b></div>
+        <div class="ro"><span>Min gap (1 s)</span><b id="r_gap">–</b></div>
+        <div class="ro"><span>Snap gap</span><b id="r_snap">–</b></div>
+        <div class="ro"><span>Plucks / s</span><b id="r_pl">–</b></div>
+        <div class="ro"><span>Peak piezo tip</span><b id="r_xp">–</b></div>
+        <div class="ro"><span>V peak (1 s)</span><b id="r_vpk">–</b></div>
+        <div class="ro"><span>Power, 1 MΩ</span><b id="r_p">–</b></div>
+      </div>
+
+      <div class="controls">
+        <fieldset>
+          <legend>Design</legend>
+          <div class="seg" id="segDesign">
+            <button id="d_asdrawn" data-v="asdrawn" aria-pressed="false">Poster as drawn</button>
+            <button id="d_corrected" data-v="corrected" aria-pressed="false">Corrected gap</button>
+            <button id="d_redesign" data-v="redesign" aria-pressed="true">Redesign</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Piezo cantilever length</legend>
+          <div class="seg" id="segLen">
+            <button id="l0" data-v="0" aria-pressed="true">85 mm</button>
+            <button id="l1" data-v="1" aria-pressed="false">95 mm</button>
+            <button id="l2" data-v="2" aria-pressed="false">105 mm</button>
+          </div>
+        </fieldset>
+        <div>
+          <label class="lbl" for="freq">Base frequency <output id="o_freq">16.1 Hz</output></label>
+          <input id="freq" type="range" min="5" max="40" step="0.1" value="16.1">
+          <div class="row"><button class="btn small" id="matchFd">Match driver f<sub>n</sub></button><button class="btn small" id="matchFp">Match piezo f<sub>n</sub></button></div>
+        </div>
+        <div>
+          <label class="lbl" for="acc">Base acceleration <output id="o_acc">2.0 m/s²</output></label>
+          <input id="acc" type="range" min="0" max="6" step="0.1" value="2">
+        </div>
+        <fieldset>
+          <legend>Playback</legend>
+          <div class="seg" id="segSpeed">
+            <button id="s1" data-v="1" aria-pressed="false">Real time</button>
+            <button id="s2" data-v="0.2" aria-pressed="true">0.2× slow</button>
+            <button id="s3" data-v="0.04" aria-pressed="false">0.04× slow</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Piezo coupling θ</legend>
+          <div class="seg" id="segTheta">
+            <button id="t_phys" data-v="phys" aria-pressed="true">Physical estimate</button>
+            <button id="t_poster" data-v="poster" aria-pressed="false">Poster 100 V/mm</button>
+          </div>
+        </fieldset>
+        <div>
+          <label class="lbl" for="exag">Draw piezo motion <output id="o_exag">×4</output></label>
+          <input id="exag" type="range" min="1" max="10" step="1" value="4">
+        </div>
+        <div class="row">
+          <button class="btn primary" id="play">Pause</button>
+          <button class="btn" id="once">Pull &amp; release once</button>
+          <button class="btn" id="reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="notes">
+    <div><h3>Poster as drawn</h3><p>The magnets start inside each other's snap distance. They grab within the first few cycles and stay stuck. This is the corrected Section 8 result.</p></div>
+    <div><h3>Corrected gap</h3><p>Safe, but the gap is so wide that the force barely changes over a cycle. The piezo is never really pulled, so there are no pluck ticks.</p></div>
+    <div><h3>Redesign</h3><p>The big driver magnet pulls the piezo about 0.7 mm once per cycle and releases it. Use “Pull &amp; release once” to see the free ring; in steady shaking the next pull arrives after only 1.1–1.6 piezo cycles.</p></div>
+  </section>
+</div>
+
+<script>
+(() => {
+"use strict";
+// ---------- parameters exported from sim.py (results/summary.json) ----------
+const SYS = {"asdrawn":[{"kd":12.444,"md":0.00051903,"mbd":0.00065171,"cd":0.002411,"kp":43.894,"mp":0.0013358,"mbp":0.0019512,"cp":0.0072643,"C":1.2834e-09,"dc":0.002,"g0":0.011776,"fd":24.644,"fp":28.851,"Freq":0.021947,"dsnap":0.013956,"Xrel":0.0034757},{"kd":8.5487,"md":0.00054896,"mbd":0.00069934,"cd":0.0020552,"kp":28.397,"mp":0.0014583,"mbp":0.0021461,"cp":0.0061049,"C":1.2834e-09,"dc":0.002,"g0":0.014605,"fd":19.861,"fp":22.209,"Freq":0.014198,"dsnap":0.015086,"Xrel":0.0054055},{"kd":6.1233,"md":0.0005789,"mbd":0.00074696,"cd":0.0017861,"kp":18.892,"mp":0.0015808,"mbp":0.002341,"cp":0.0051843,"C":1.2834e-09,"dc":0.002,"g0":0.018199,"fd":16.369,"fp":17.399,"Freq":0.0094458,"dsnap":0.016184,"Xrel":0.0078992}],"corrected":[{"kd":12.444,"md":0.00051903,"mbd":0.00065171,"cd":0.002411,"kp":43.894,"mp":0.0013358,"mbp":0.0019512,"cp":0.0072643,"C":1.2834e-09,"dc":0.002,"g0":0.023391,"fd":24.644,"fp":28.851,"Freq":0.021947,"dsnap":0.013956,"Xrel":0.0034757},{"kd":8.5487,"md":0.00054896,"mbd":0.00069934,"cd":0.0020552,"kp":28.397,"mp":0.0014583,"mbp":0.0021461,"cp":0.0061049,"C":1.2834e-09,"dc":0.002,"g0":0.026874,"fd":19.861,"fp":22.209,"Freq":0.014198,"dsnap":0.015086,"Xrel":0.0054055},{"kd":6.1233,"md":0.0005789,"mbd":0.00074696,"cd":0.0017861,"kp":18.892,"mp":0.0015808,"mbp":0.002341,"cp":0.0051843,"C":1.2834e-09,"dc":0.002,"g0":0.030849,"fd":16.369,"fp":17.399,"Freq":0.0094458,"dsnap":0.016184,"Xrel":0.0078992}],"redesign":[{"kd":100.89,"md":0.0098521,"mbd":0.010001,"cd":0.02991,"kp":43.894,"mp":0.0016774,"mbp":0.0022928,"cp":0.0081404,"C":7.1541e-08,"dc":0.0055,"g0":0.043785,"fd":16.106,"fp":25.746,"Freq":0.021947,"dsnap":0.024786,"Xrel":0.0066049},{"kd":82.031,"md":0.0077203,"mbd":0.0077911,"cd":0.023874,"kp":28.397,"mp":0.0014583,"mbp":0.0021461,"cp":0.0061049,"C":3.3121e-08,"dc":0.005,"g0":0.040656,"fd":16.406,"fp":22.209,"Freq":0.014198,"dsnap":0.022888,"Xrel":0.0063244},{"kd":61.631,"md":0.0059968,"mbd":0.0061719,"cd":0.018238,"kp":18.892,"mp":0.0014747,"mbp":0.0022349,"cp":0.0050074,"C":1.5898e-08,"dc":0.004,"g0":0.038592,"fd":16.135,"fp":18.013,"Freq":0.0094458,"dsnap":0.021313,"Xrel":0.0066216}]};
+// geometry in mm (poster baseline, and Step-2 redesign)
+const LP = [85, 95, 105];
+const GEO_POSTER = i => ({L_d: LP[i]-10, t_d:1, D_d:5, h_d:2, D_p:5, h_p:2});
+const GEO_RED = [{L_d:56,t_d:1.5,D_d:12.7,h_d:8,D_p:6,h_p:3},{L_d:40,t_d:1,D_d:12.7,h_d:8,D_p:5,h_p:2},{L_d:66,t_d:1.5,D_d:12.7,h_d:6,D_p:4,h_p:2}];
+const SEG_B = 11.6, SEG_C = 45.4;                 // piezo segment lengths from the clamp (mm)
+const TH = {phys:[6.11e-5,4.69e-5,3.61e-5], poster:7.526e-4};
+const CP = 7.5259e-9, RLOAD = 1e6, KC = 2e6, CC = 5, DT = 1e-5, SAMPLE = 2.5e-4, WIN = 0.5, NBUF = 4000;
+
+// ---------- state ----------
+const S = {design:"redesign", len:0, f:16.1, a:2, speed:0.2, theta:"phys", exag:4, running:true, shaking:true,
+  p:null, t:0, phase:0, ramp:0, y:[0,0,0,0,0], acc:0,
+  buf:{t:new Float32Array(NBUF), xd:new Float32Array(NBUF), xp:new Float32Array(NBUF), d:new Float32Array(NBUF), V:new Float32Array(NBUF), F:new Float32Array(NBUF)},
+  head:0, count:0, plucks:[], dPrev:NaN, dPrev2:NaN, FlastMax:Infinity, lastSwing:0, contactT:0, captured:false};
+
+function th(){ return S.theta === "phys" ? TH.phys[S.len] : TH.poster; }
+function geo(){ return S.design === "redesign" ? GEO_RED[S.len] : GEO_POSTER(S.len); }
+
+// ---------- physics: identical to sim.py rhs ----------
+const k1=new Float64Array(5),k2=new Float64Array(5),k3=new Float64Array(5),k4=new Float64Array(5),tmp=new Float64Array(5);
+function force(d){ const p=S.p; return p.C/Math.pow(Math.max(d,p.dc),4); }
+function deriv(y, ab, out){
+  const p=S.p, T=th();
+  const xd=y[0],vd=y[1],xp=y[2],vp=y[3],V=y[4];
+  const d=p.g0+xp-xd;
+  let Fn=p.C/Math.pow(Math.max(d,p.dc),4);
+  const pen=p.dc-d;
+  if(pen>0) Fn-=Math.max(KC*pen-CC*(vp-vd),0);
+  out[0]=vd; out[1]=(-p.cd*vd-p.kd*xd-p.mbd*ab+Fn)/p.md;
+  out[2]=vp; out[3]=(-p.cp*vp-p.kp*xp-T*V-p.mbp*ab-Fn)/p.mp;
+  out[4]=(T*vp-V/RLOAD)/CP;
+}
+function baseAcc(ph){ return S.shaking ? S.a*Math.min(S.ramp,1)*Math.sin(ph) : 0; }
+function step(){
+  const y=S.y, h=DT, w=2*Math.PI*S.f;
+  const a0=baseAcc(S.phase), a1=baseAcc(S.phase+w*h/2), a2=baseAcc(S.phase+w*h);
+  deriv(y,a0,k1); for(let i=0;i<5;i++) tmp[i]=y[i]+h/2*k1[i];
+  deriv(tmp,a1,k2); for(let i=0;i<5;i++) tmp[i]=y[i]+h/2*k2[i];
+  deriv(tmp,a1,k3); for(let i=0;i<5;i++) tmp[i]=y[i]+h*k3[i];
+  deriv(tmp,a2,k4);
+  for(let i=0;i<5;i++) y[i]+=h/6*(k1[i]+2*k2[i]+2*k3[i]+k4[i]);
+  S.t+=h; S.phase+=w*h; S.ramp+=h/0.3;
+  if(!isFinite(y[0])||!isFinite(y[2])) hardReset();
+  const d=S.p.g0+y[2]-y[0];
+  if(d<=S.p.dc*1.02){ S.contactT+=h; if(S.contactT>0.05) S.captured=true; } else S.contactT=0;
+  S.acc+=h;
+  if(S.acc>=SAMPLE){ S.acc-=SAMPLE; record(d); }
+}
+function record(d){
+  const b=S.buf, i=S.head, F=force(d);
+  b.t[i]=S.t; b.xd[i]=S.y[0]; b.xp[i]=S.y[2]; b.d[i]=d; b.V[i]=S.y[4]; b.F[i]=F;
+  S.head=(i+1)%NBUF; S.count=Math.min(S.count+1,NBUF);
+  // pluck = force swing (closest-approach force minus preceding farthest-point force) >= F_req
+  if(!isNaN(S.dPrev2)){
+    const Fp=force(S.dPrev);
+    if(S.dPrev>S.dPrev2 && S.dPrev>=d) S.FlastMax=Fp;
+    if(S.dPrev<S.dPrev2 && S.dPrev<=d){
+      const sw=Fp-S.FlastMax; if(isFinite(sw)) S.lastSwing=sw;
+      if(sw>=S.p.Freq) S.plucks.push(S.t);
+    }
+  }
+  S.dPrev2=S.dPrev; S.dPrev=d;
+  while(S.plucks.length && S.plucks[0]<S.t-1.5) S.plucks.shift();
+}
+function clearHistory(){
+  S.head=0; S.count=0; S.plucks=[]; S.dPrev=S.dPrev2=NaN; S.FlastMax=Infinity; S.lastSwing=0; S.contactT=0; S.captured=false; S.acc=0;
+}
+function hardReset(){ S.y=[0,0,0,0,0]; S.t=0; S.phase=0; S.ramp=0; clearHistory(); }
+function warm(sec){ const n=Math.round(sec/DT); for(let i=0;i<n;i++) step(); }
+
+// quasi-static piezo position with driver held at xd (u = pull toward driver)
+function qsPull(xd){
+  const p=S.p, D=p.g0-xd, us=D-Math.pow(4*p.C/p.kp,0.2);
+  const f=u=>p.kp*u-p.C/Math.pow(D-u,4);
+  if(us<=0||f(us)<0) return null;
+  let lo=0,hi=us; for(let i=0;i<60;i++){ const m=(lo+hi)/2; f(m)>0?hi=m:lo=m; }
+  return (lo+hi)/2;
+}
+
+function loadPreset(keepF){
+  S.p=SYS[S.design][S.len];
+  if(!keepF) S.f=Math.round(S.p.fd*10)/10;
+  S.shaking=true; hardReset(); warm(1.5);
+  syncControls();
+}
+function pullOnce(){
+  S.shaking=false; clearHistory();
+  const X=S.p.Xrel, u=qsPull(X);
+  S.y=[X,0,u===null?-(S.p.g0-X-S.p.dc):-u,0,0];
+  S.FlastMax=force(S.p.g0+X); // reference: force with the driver at the far end of its stroke
+  syncControls();
+}
+
+// ---------- UI ----------
+const $=id=>document.getElementById(id);
+function css(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function segSet(id,v){ for(const b of $(id).querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.v===String(v))); }
+function syncControls(){
+  segSet("segDesign",S.design); segSet("segLen",S.len); segSet("segSpeed",S.speed); segSet("segTheta",S.theta);
+  $("freq").value=S.f; $("o_freq").textContent=S.f.toFixed(1)+" Hz";
+  $("acc").value=S.a; $("o_acc").textContent=S.a.toFixed(1)+" m/s² ("+(S.a/9.81).toFixed(2)+" g)";
+  $("exag").value=S.exag; $("o_exag").textContent="×"+S.exag;
+  $("exagKey").textContent = S.exag>1 ? "Piezo motion drawn ×"+S.exag+"; everything else to scale" : "Everything drawn to scale";
+  $("play").textContent=S.running?"Pause":"Play";
+  $("once").textContent=S.shaking?"Pull & release once":"Resume shaking";
+}
+function bindSeg(id,fn){ $(id).addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) fn(b.dataset.v); }); }
+bindSeg("segDesign",v=>{S.design=v; loadPreset(false);});
+bindSeg("segLen",v=>{S.len=+v; loadPreset(false);});
+bindSeg("segSpeed",v=>{S.speed=+v; syncControls();});
+bindSeg("segTheta",v=>{S.theta=v; syncControls();});
+$("freq").addEventListener("input",e=>{S.f=+e.target.value; syncControls();});
+$("acc").addEventListener("input",e=>{S.a=+e.target.value; syncControls();});
+$("exag").addEventListener("input",e=>{S.exag=+e.target.value; syncControls();});
+$("matchFd").addEventListener("click",()=>{S.f=Math.round(S.p.fd*10)/10; syncControls();});
+$("matchFp").addEventListener("click",()=>{S.f=Math.round(S.p.fp*10)/10; syncControls();});
+$("play").addEventListener("click",()=>{S.running=!S.running; last=performance.now(); syncControls();});
+$("once").addEventListener("click",()=>{ if(S.shaking) pullOnce(); else { S.shaking=true; S.ramp=0; clearHistory(); syncControls(); } });
+$("reset").addEventListener("click",()=>loadPreset(true));
+
+// ---------- canvas helpers ----------
+function fit(cv){
+  const r=cv.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=Math.max(1,Math.round(r.width*dpr)), h=Math.max(1,Math.round(r.height*dpr));
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  const c=cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0); return {c,w:r.width,h:r.height};
+}
+const stage=$("stage"), traces=$("traces");
+
+function drawStage(){
+  const fitted=fit(stage); const c=fitted.c, W0=fitted.w, H0=fitted.h; const p=S.p, g=geo();
+  const w=H0, h=W0;                                   // virtual (upright) canvas; rotated onto the real one below
+  const M0=c.getTransform();
+  // upright text at a virtual point (vx,vy), offset (dx,dy) in screen px
+  const U=(t,vx,vy,dx=0,dy=0,align="left")=>{ const sx=W0-vy, sy=vx; c.save(); c.setTransform(M0); c.textAlign=align; c.fillText(t,sx+dx,sy+dy); c.restore(); };
+  const col={ink:css("--ink"),ink2:css("--ink-2"),rule:css("--rule"),grid:css("--grid"),petg:css("--petg"),pzt:css("--pzt"),
+    steel:css("--steel"),steel2:css("--steel-2"),volt:css("--volt"),bad:css("--bad"),snap:css("--snap"),sheet:css("--sheet")};
+  c.clearRect(0,0,W0,H0);
+  c.save(); c.translate(W0,0); c.rotate(Math.PI/2);
+  const Lp=LP[S.len], Ld=g.L_d, g0=p.g0*1e3;
+  // world (mm): driver beam centerline x=0; magnets face each other at the tips
+  const xDb=0, xPb=g0+g.h_d/2+g.h_p/2+1.0;            // piezo beam centerline (beam half-thickness ~0.5 mm each)
+  const sceneL=-14, sceneR=xPb+16, sceneT=Lp+64, sceneB=-14;
+  const s=Math.min((w-24)/(sceneR-sceneL),(h-24)/(sceneT-sceneB));
+  const ox=(w-(sceneR-sceneL)*s)/2 - sceneL*s, oy=h-(h-(sceneT-sceneB)*s)/2 + sceneB*s;
+  const X=x=>ox+x*s, Y=y=>oy-y*s;
+  // drafting grid, 10 mm
+  c.strokeStyle=col.grid; c.lineWidth=1; c.beginPath();
+  for(let x=Math.ceil(sceneL/10)*10;x<=sceneR;x+=10){c.moveTo(X(x),Y(sceneB));c.lineTo(X(x),Y(sceneT));}
+  for(let y=Math.ceil(sceneB/10)*10;y<=sceneT;y+=10){c.moveTo(X(sceneL),Y(y));c.lineTo(X(sceneR),Y(y));}
+  c.stroke();
+  // base plate, offset by shaking
+  const wv=2*Math.PI*S.f, bx= S.shaking ? -(S.a*Math.min(S.ramp,1)/(wv*wv))*Math.sin(S.phase)*1e3 : 0;
+  const riser=Lp-Ld;
+  c.fillStyle=col.steel2; c.fillRect(X(sceneL+6+bx),Y(0),(sceneR-sceneL-12)*s,8*s);
+  c.fillStyle=col.ink; c.font="500 11px "+css("--f-mono");
+  const baseLbl="excitation base (shakes up and down): "+(S.shaking?S.f.toFixed(1)+" Hz, "+S.a.toFixed(1)+" m/s²":"off");
+  // clamps + riser
+  c.fillStyle=col.ink2;
+  c.fillRect(X(xDb-6+bx),Y(riser+6),12*s,(riser+6)*s);   // driver clamp/riser
+  c.fillRect(X(xPb-6+bx),Y(6),12*s,6*s);                  // piezo clamp
+  if(riser>0.5){ c.fillStyle=col.sheet; c.font="500 10px "+css("--f-mono"); c.save(); c.translate(X(xDb+3+bx),Y(riser/2)); c.rotate(-Math.PI/2); c.fillText("riser "+riser.toFixed(0)+" mm",-30,0); c.restore(); }
+  // beam shape: static tip-load mode
+  const shape=(sg)=> (3*sg*sg - sg*sg*sg)/2;
+  function beam(xc,y0,L,tip,thick,color,pzt){
+    const n=40;
+    c.lineCap="butt";
+    c.strokeStyle=color; c.lineWidth=Math.max(2,thick*s);
+    c.beginPath();
+    for(let i=0;i<=n;i++){const sg=i/n; const x=xc+tip*shape(sg), y=y0+L*sg; i?c.lineTo(X(x+bx),Y(y)):c.moveTo(X(x+bx),Y(y));}
+    c.stroke();
+    if(pzt){ // bimorph patch, glow by voltage
+      const Vref = S.theta==="phys"?8:20, gl=Math.min(1,Math.abs(S.y[4])/Vref);
+      c.strokeStyle=col.pzt; c.lineWidth=Math.max(4,(thick+1.4)*s);
+      c.beginPath();
+      for(let i=0;i<=20;i++){const sg=(SEG_B+(SEG_C)*i/20)/L; const x=xc+tip*shape(sg), y=y0+L*sg; i?c.lineTo(X(x+bx),Y(y)):c.moveTo(X(x+bx),Y(y));}
+      c.stroke();
+      if(gl>0.02){ c.save(); c.shadowColor=col.volt; c.shadowBlur=18*gl; c.strokeStyle=col.volt; c.globalAlpha=gl; c.lineWidth=Math.max(3,(thick+0.6)*s); c.stroke(); c.restore(); }
+    }
+    return xc+tip;
+  }
+  const xdTip=S.y[0]*1e3, xpTrue=S.y[2]*1e3;
+  // exaggerate piezo only; never draw it through the driver magnet
+  let xpDraw=xpTrue*S.exag;
+  const faceGap=(g0+xpDraw-xdTip)-(g.h_d+g.h_p)/2; if(faceGap<0) xpDraw-=faceGap;
+  const dTipD=beam(xDb,riser,Ld,xdTip,g.t_d,col.petg,false);
+  const dTipP=beam(xPb,0,Lp,xpDraw,1.0,col.pzt,true);
+  // snap zone: driver magnet centre inside this band = magnets grab
+  const mcP=dTipP-(g.h_p/2+0.5), yTip=Lp-Math.max(g.D_d,g.D_p)/2-1;
+  c.fillStyle=col.snap; c.setLineDash([4,3]); c.strokeStyle=col.bad; c.lineWidth=1;
+  c.fillRect(X(mcP-p.dsnap*1e3+bx),Y(yTip+g.D_d/2+3),p.dsnap*1e3*s,(g.D_d+6)*s);
+  c.beginPath(); c.moveTo(X(mcP-p.dsnap*1e3+bx),Y(yTip+g.D_d/2+3)); c.lineTo(X(mcP-p.dsnap*1e3+bx),Y(yTip-g.D_d/2-3)); c.stroke(); c.setLineDash([]);
+  c.fillStyle=col.bad; c.font="500 10px "+css("--f-mono"); U("snap "+(p.dsnap*1e3).toFixed(1)+" mm",X(mcP-p.dsnap*1e3+bx),Y(yTip-g.D_d/2-3),-4,-6,"right");
+  // magnets (cylinders side-on: thickness h along x, diameter D along y)
+  function magnet(xl,D,hm,yc,leftN){
+    const half=hm/2;
+    c.fillStyle=leftN?col.steel:col.steel2; c.fillRect(X(xl+bx),Y(yc+D/2),half*s,D*s);
+    c.fillStyle=leftN?col.steel2:col.steel; c.fillRect(X(xl+half+bx),Y(yc+D/2),half*s,D*s);
+    c.strokeStyle=col.ink; c.lineWidth=1; c.strokeRect(X(xl+bx),Y(yc+D/2),hm*s,D*s);
+    if(hm*s>16&&D*s>12){c.fillStyle=col.ink; c.font="600 10px "+css("--f-mono");
+      U(leftN?"N":"S",X(xl+half/2+bx),Y(yc),0,4,"center"); U(leftN?"S":"N",X(xl+1.5*half+bx),Y(yc),0,4,"center");}
+  }
+  const xmD=dTipD+g.t_d/2, xmP=dTipP-0.5-g.h_p;
+  magnet(xmD,g.D_d,g.h_d,yTip,true);
+  magnet(xmP,g.D_p,g.h_p,yTip,true);
+  // force arrows + gap dimension
+  const d=p.g0+S.y[2]-S.y[0], F=force(d), fr=F/p.Freq;
+  const ax0=xmD+g.h_d, ax1=xmP, ym=yTip;
+  if(ax1-ax0>2){
+    const lw=Math.max(1,Math.min(7,1+fr*3));
+    c.strokeStyle=col.volt; c.fillStyle=col.volt; c.lineWidth=lw;
+    const L=Math.min((ax1-ax0)/2-1, 2+fr*6);
+    const arrow=(xs,dir)=>{c.beginPath();c.moveTo(X(xs+bx),Y(ym));c.lineTo(X(xs+dir*L+bx),Y(ym));c.stroke();
+      c.beginPath();c.moveTo(X(xs+dir*(L+2.2)+bx),Y(ym));c.lineTo(X(xs+dir*L+bx),Y(ym)-4-lw/2);c.lineTo(X(xs+dir*L+bx),Y(ym)+4+lw/2);c.fill();};
+    arrow(ax1,-1); arrow(ax0,1);
+  }
+  // dimension line
+  const yd=Lp+12;
+  c.strokeStyle=col.ink2; c.lineWidth=1;
+  const cD=xmD+g.h_d/2, cP=xmP+g.h_p/2;
+  c.beginPath(); c.moveTo(X(cD+bx),Y(yTip+g.D_d/2+1)); c.lineTo(X(cD+bx),Y(yd+2)); c.moveTo(X(cP+bx),Y(yTip+g.D_p/2+1)); c.lineTo(X(cP+bx),Y(yd+2));
+  c.moveTo(X(cD+bx),Y(yd)); c.lineTo(X(cP+bx),Y(yd)); c.stroke();
+  c.fillStyle=col.ink; c.font="500 12px "+css("--f-mono");
+  const lbl="d = "+(d*1e3).toFixed(1)+" mm   F = "+(F*1e3).toFixed(1)+" mN ("+fr.toFixed(2)+"× F_req)";
+  U("d = "+(d*1e3).toFixed(1)+" mm",X((cD+cP)/2+bx),Y(yd),8,-2);
+  U("F = "+(F*1e3).toFixed(F*1e3>=1000?0:1)+" mN ("+fr.toFixed(fr>=100?0:2)+"× F_req)",X((cD+cP)/2+bx),Y(yd),8,13);
+  // labels
+  c.font="600 11px "+css("--f-body"); c.fillStyle=col.petg;
+  U("driver "+Ld+" mm",X(xDb+bx),Y(riser+Ld*0.45),0,-16);
+  c.fillStyle=col.pzt; U("piezo "+Lp+" mm",X(xPb+bx),Y(Lp*0.22),0,26);
+  c.restore();
+  c.fillStyle=col.ink; c.font="500 11px "+css("--f-mono"); c.textAlign="left"; c.fillText(baseLbl,10,H0-10);
+}
+
+function drawTraces(){
+  const {c,w,h}=fit(traces); const p=S.p, b=S.buf;
+  const col={ink:css("--ink"),ink2:css("--ink-2"),rule:css("--rule"),grid:css("--grid"),petg:css("--petg"),pzt:css("--pzt"),volt:css("--volt"),bad:css("--bad")};
+  c.clearRect(0,0,w,h);
+  const L=58, R=12, top=8, gapY=10, ph=(h-top-24-2*gapY)/3, x0=L, x1=w-R;
+  const tEnd=S.t, tStart=tEnd-WIN, tx=t=>x0+(t-tStart)/WIN*(x1-x0);
+  const n=S.count, idx=k=>(S.head-n+k+NBUF)%NBUF;
+  let first=0; while(first<n && b.t[idx(first)]<tStart) first++;
+  const panels=[
+    {title:"tip displacement (mm)",series:[["xd",col.petg,1e3,"driver"],["xp",col.pzt,1e3,"piezo"]],sym:true},
+    {title:"gap d (mm)",series:[["d",col.ink,1e3,"gap"]],sym:false,lines:[[p.dsnap*1e3,col.bad,"snap"],[p.dc*1e3,col.ink2,"contact"]]},
+    {title:"voltage (V)",series:[["V",col.volt,1,"V"]],sym:true}];
+  c.font="500 10px "+css("--f-mono");
+  panels.forEach((pn,k)=>{
+    const yT=top+k*(ph+gapY), yB=yT+ph;
+    let lo=Infinity,hi=-Infinity;
+    for(const [key,, sc] of pn.series) for(let j=first;j<n;j++){const v=b[key][idx(j)]*sc; if(v<lo)lo=v; if(v>hi)hi=v;}
+    if(pn.lines) for(const [v] of pn.lines){ if(v<lo)lo=v; if(v>hi)hi=v; }
+    if(!isFinite(lo)){lo=-1;hi=1;}
+    if(pn.sym){const m=Math.max(Math.abs(lo),Math.abs(hi),pn.series[0][0]==="V"?0.5:0.05)*1.15; lo=-m; hi=m;}
+    else { lo=0; hi=Math.max(hi*1.08,1); }
+    const yv=v=>yB-(v-lo)/(hi-lo)*ph;
+    c.strokeStyle=col.rule; c.lineWidth=1; c.strokeRect(x0,yT,x1-x0,ph);
+    c.strokeStyle=col.grid; c.beginPath();
+    for(let q=1;q<4;q++){const yy=yT+ph*q/4; c.moveTo(x0+1,yy); c.lineTo(x1-1,yy);} c.stroke();
+    c.fillStyle=col.ink2; c.textAlign="right";
+    c.fillText(hi.toFixed(hi>=10?0:(hi>=1?1:2)),x0-5,yT+9); c.fillText(lo.toFixed(Math.abs(lo)>=10?0:(Math.abs(lo)>=1?1:2)),x0-5,yB);
+    c.textAlign="left"; c.fillText(pn.title,x0+6,yT+12);
+    if(pn.lines) for(const [v,cl,lab] of pn.lines){ c.strokeStyle=cl; c.setLineDash([5,4]); c.beginPath(); c.moveTo(x0,yv(v)); c.lineTo(x1,yv(v)); c.stroke(); c.setLineDash([]); c.fillStyle=cl; c.fillText(lab,x1-48,yv(v)-3); }
+    // pluck ticks
+    c.strokeStyle=col.bad; c.globalAlpha=.35;
+    for(const tp of S.plucks) if(tp>=tStart){ c.beginPath(); c.moveTo(tx(tp),yT); c.lineTo(tx(tp),yB); c.stroke(); }
+    c.globalAlpha=1;
+    c.save(); c.beginPath(); c.rect(x0,yT,x1-x0,ph); c.clip();
+    let lx=x0+150;
+    for(const [key,cl,sc,lab] of pn.series){
+      c.strokeStyle=cl; c.lineWidth=1.6; c.beginPath();
+      for(let j=first;j<n;j++){const ii=idx(j), X=tx(b.t[ii]), Yv=yv(b[key][ii]*sc); j===first?c.moveTo(X,Yv):c.lineTo(X,Yv);}
+      c.stroke();
+      if(pn.series.length>1){ c.fillStyle=cl; c.fillText("— "+lab,lx,yT+12); lx+=70; }
+    }
+    c.restore();
+  });
+  c.fillStyle=col.ink2; c.textAlign="center";
+  for(let q=0;q<=5;q++){const t=tStart+WIN*q/5; c.fillText((t).toFixed(2)+" s",x0+(x1-x0)*q/5,h-6);}
+  c.textAlign="left";
+}
+
+function readouts(){
+  const p=S.p, b=S.buf, n=S.count, t1=S.t-1;
+  let dmin=Infinity, vpk=0, v2=0, m=0, xpk=0;
+  for(let k=0;k<n;k++){const i=(S.head-n+k+NBUF)%NBUF; if(b.t[i]<t1) continue; dmin=Math.min(dmin,b.d[i]); vpk=Math.max(vpk,Math.abs(b.V[i])); xpk=Math.max(xpk,Math.abs(b.xp[i])); v2+=b.V[i]*b.V[i]; m++;}
+  const recent=S.plucks.filter(t=>t>S.t-1).length;
+  $("r_fd").textContent=p.fd.toFixed(1)+" Hz"; $("r_fp").textContent=p.fp.toFixed(1)+" Hz";
+  $("r_cyc").textContent=S.shaking?(p.fp/S.f).toFixed(2):"–";
+  $("r_gap").textContent=isFinite(dmin)?(dmin*1e3).toFixed(1)+" mm":"–";
+  $("r_snap").textContent=(p.dsnap*1e3).toFixed(1)+" mm";
+  $("r_pl").textContent=String(recent);
+  $("r_xp").textContent=(xpk*1e3).toFixed(2)+" mm";
+  $("r_vpk").textContent=vpk.toFixed(2)+" V";
+  $("r_p").textContent=m?((v2/m)/RLOAD*1e6).toFixed(2)+" µW":"–";
+  // status
+  const pill=$("pill"), txt=$("statusText");
+  const lastPl=S.plucks.length?S.plucks[S.plucks.length-1]:-1;
+  if(S.captured){ pill.className="pill bad"; pill.textContent="Magnets captured";
+    txt.textContent="The magnets snapped together and are stuck. The rest gap is inside the snap distance of "+(p.dsnap*1e3).toFixed(1)+" mm. Press Reset or pick another design."; }
+  else if(!S.shaking){ pill.className="pill"; pill.textContent="Free vibration";
+    txt.textContent="Base shaking is off. The driver was pulled in and let go; it swings back on its own, and the piezo rings at "+p.fp.toFixed(1)+" Hz between passes."; }
+  else if(lastPl>S.t-2/S.f){ pill.className="pill ok"; pill.textContent="Plucking";
+    txt.textContent="Each cycle the magnet pulls the piezo by more than 0.5 mm and lets it go. The next pull comes after "+(p.fp/S.f).toFixed(2)+" piezo cycles."; }
+  else { pill.className="pill warn"; pill.textContent="Not plucking";
+    const pc=Math.max(0,S.lastSwing/p.Freq*100);
+    txt.textContent="The force swing per cycle is "+pc.toFixed(0)+"% of what a 0.5 mm pull needs. Any voltage here comes from the base shaking the piezo directly."; }
+}
+
+// ---------- loop ----------
+let last=performance.now();
+function frame(now){
+  const dtReal=Math.min(0.05,(now-last)/1000); last=now;
+  if(S.running){ const n=Math.ceil(dtReal*S.speed/DT); for(let i=0;i<n;i++) step(); }
+  drawStage(); drawTraces(); readouts();
+  requestAnimationFrame(frame);
+}
+if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){ S.running=false; }
+loadPreset(false);
+syncControls();
+requestAnimationFrame(frame);
+})();
+</script>

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MagPluck Engineering Design Portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+  @page { size: letter; margin: 0; }
+  :root { --navy:#1F3A68; --coral:#C9573A; --coralbg:#FBE9E3; --ink:#24282F; --mute:#5D6576; --rule:#C9D0DE; --tint:#EEF2F8; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#fff; color:var(--ink); }
+  body { font-family:"Source Sans 3","Segoe UI",Arial,sans-serif; font-size:10.4pt; line-height:1.36; }
+  .page { width:8.5in; height:11in; padding:0.4in 0.42in; page-break-after:always; break-after:page; }
+  .frame { border:1.6px solid var(--navy); height:100%; padding:0.26in 0.36in 0.2in; position:relative; overflow:hidden; }
+  .pnum { position:absolute; right:0.3in; bottom:0.14in; font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:10pt; }
+  h1 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:19pt; text-align:center; margin:0 0 8px; font-weight:700; text-wrap:balance; }
+  h2 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:11.6pt; margin:9px 0 3px; font-weight:600; }
+  p { margin:0 0 6px; }
+  ul, ol { margin:2px 0 6px; padding-left:18px; } li { margin-bottom:2px; }
+  b, strong { font-weight:700; }
+  .fig { margin:2px 0 6px; text-align:center; }
+  .fig img, .fig svg { width:100%; height:auto; display:block; }
+  .fr { float:right; margin-left:14px; }
+  .fl { float:left; margin-right:14px; }
+  .cap { font-size:8.3pt; line-height:1.25; color:var(--ink); margin-top:2px; }
+  .cap b { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; }
+  .src { display:block; color:var(--mute); font-size:7.6pt; margin-top:1px; }
+  .clear { clear:both; }
+  .box { border:1.4px solid var(--navy); border-radius:6px; padding:7px 10px; margin:6px 0; background:#fff; }
+  .box.tint { background:var(--tint); border-color:var(--tint); }
+  .box.coral { background:var(--coralbg); border-color:var(--coralbg); }
+  .box h3 { font-family:Outfit,Arial,sans-serif; font-size:10.2pt; color:var(--navy); margin:0 0 3px; }
+  .reqs { display:grid; grid-template-columns:1fr 1fr; gap:4px 14px; font-size:9.6pt; }
+  .reqs span b { color:var(--coral); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .two > div { min-width:0; }
+  .pro h3 { color:#2E6B45; } .con h3 { color:var(--coral); }
+  .pro, .con { font-size:9.6pt; }
+  .meets { width:100%; border-collapse:collapse; font-size:9.3pt; margin-top:3px; }
+  .meets td { padding:3px 6px; border-top:1px solid var(--rule); vertical-align:top; }
+  .meets td:first-child { white-space:nowrap; font-weight:600; color:var(--navy); width:1%; }
+  .meets td:nth-child(2) { width:1%; text-align:center; font-size:11pt; color:var(--navy); }
+  .dot { font-size:11pt; color:var(--navy); }
+  table.cmp { width:100%; border-collapse:collapse; font-size:9.1pt; }
+  table.cmp th { font-family:Outfit,Arial,sans-serif; font-weight:600; color:var(--navy); text-align:left; border-bottom:1.6px solid var(--navy); padding:4px 5px; }
+  table.cmp td { border-bottom:1px solid var(--rule); padding:4px 5px; vertical-align:top; }
+  table.cmp td.c, table.cmp th.c { text-align:center; font-size:12pt; width:30px; }
+  table.cmp tr.sel td { background:var(--coralbg); }
+  table.cmp tr.sel td:first-child { color:var(--coral); font-weight:700; }
+  table.spec { width:100%; border-collapse:collapse; font-size:9pt; }
+  table.spec td { padding:2.5px 5px; border-bottom:1px solid var(--rule); vertical-align:top; }
+  table.spec td:first-child { color:var(--mute); width:44%; }
+  .legend { font-size:7.8pt; color:var(--mute); text-align:center; margin-top:3px; }
+  .kicker { font-family:Outfit,Arial,sans-serif; font-size:8pt; letter-spacing:0.08em; text-transform:uppercase; color:var(--coral); font-weight:600; }
+  /* title page */
+  .title { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; }
+  .title .big { font-family:Outfit,Arial,sans-serif; font-weight:600; color:var(--navy); font-size:46pt; line-height:1.02; }
+  .title .bar { width:64px; height:3px; background:var(--navy); margin:22px auto 18px; border-radius:2px; }
+  .title .sub { font-family:Outfit,Arial,sans-serif; font-weight:500; color:var(--navy); font-size:13.2pt; max-width:5.6in; }
+  .title .theme { font-family:Outfit,Arial,sans-serif; color:var(--coral); font-size:11pt; margin-top:10px; letter-spacing:0.02em; }
+  .title .meta { margin-top:30px; color:var(--mute); font-size:11pt; line-height:1.6; }
+  /* toc */
+  .toc { margin-top:14px; font-size:11pt; }
+  .toc div { display:flex; align-items:baseline; margin:9px 0; }
+  .toc .t { font-weight:600; }
+  .toc .sub { padding-left:26px; font-weight:400; }
+  .toc .lead { flex:1; border-bottom:1px dotted var(--mute); margin:0 8px; transform:translateY(-3px); }
+  .toc .n { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; }
+  .refs p { font-size:8.7pt; line-height:1.28; padding-left:22px; text-indent:-22px; margin:0 0 5px; }
+  .i { display:inline-block; width:10px; height:10px; border-radius:50%; border:1.6px solid var(--navy); vertical-align:-1px; }
+  .i.f { background:var(--navy); } .i.h { background:linear-gradient(90deg,var(--navy) 50%,transparent 50%); }
+  svg text { font-family:"Source Sans 3",Arial,sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- ============================ A. TITLE ============================ -->
+<section class="page"><div class="frame"><div class="title">
+  <div class="big">Engineering<br>Design</div>
+  <div class="bar"></div>
+  <div class="sub">MagPluck: A Non-Contact, Magnetically Plucked Piezoelectric Harvester for Low-Frequency Everyday Vibration</div>
+  <div class="theme">2026–2027 Theme: Engineering the Future of Energy</div>
+  <div class="meta">Team ID: ____________<br>Sammamish, Washington<br>Washington TSA Regional Competition, 2027</div>
+</div></div></section>
+
+<!-- ============================ B. CONTENTS ============================ -->
+<section class="page"><div class="frame">
+  <h1>Table of Contents:</h1>
+  <div class="toc">
+    <div><span class="t">Identification and Definition of the Problem</span><span class="lead"></span><span class="n">3</span></div>
+    <div><span class="t">Information Gathering: Powering Sensors with Vibration</span><span class="lead"></span><span class="n">4</span></div>
+    <div><span class="t">Possible Solutions</span><span class="lead"></span><span class="n">5</span></div>
+    <div><span class="sub">#1: Tuned Resonant Piezoelectric Cantilever</span><span class="lead"></span><span class="n">5</span></div>
+    <div><span class="sub">#2: Contact-Plucked Frequency Up-Converter</span><span class="lead"></span><span class="n">6</span></div>
+    <div><span class="sub">#3: MagPluck, a Magnetically Plucked Dual Cantilever</span><span class="lead"></span><span class="n">7</span></div>
+    <div><span class="t">Most Plausible Solution: Written Description and Digital Model</span><span class="lead"></span><span class="n">8</span></div>
+    <div><span class="sub">Why MagPluck Was Selected</span><span class="lead"></span><span class="n">9</span></div>
+    <div><span class="t">Resources (Works Cited)</span><span class="lead"></span><span class="n">10</span></div>
+  </div>
+  <div class="pnum">2</div>
+</div></section>
+
+<!-- ============================ C. PROBLEM ============================ -->
+<section class="page"><div class="frame">
+  <h1>Identification and Definition of the Problem:</h1>
+  <p>The future of energy is not only about big power plants. It is also about billions of small devices that need a little power, all the time, in places that are hard to reach. At the end of 2025 there were about 21.1 billion connected IoT (Internet of Things) devices, and the number is expected to reach 39 billion by 2030 (IoT Analytics). Many are wireless sensors that watch the health of bridges, roads, machines, and vehicles. One sensor node needs only tens to hundreds of microwatts (Roundy et al.).</p>
+
+  <div class="fig fr" style="width:3.25in">
+    <img src="figs/sources.png" alt="Bar chart of the main vibration frequency of eleven everyday sources">
+    <div class="cap"><b>Figure A:</b> Strongest vibration frequency of everyday sources. Coral bars are at or below 30 Hz.<span class="src">Chart drawn by our team from Roundy et al., Table 2.</span></div>
+  </div>
+  <p>Most of these sensors run on batteries. Roundy et al. found that batteries are fine for short lifetimes, but "another solution is required for long lifetimes." Every battery must eventually be replaced by a person who travels to the sensor, and the old battery becomes waste. Lithium-ion batteries thrown in the trash caused more than 240 fires at 64 U.S. waste facilities from 2013 to 2020 (U.S. EPA).</p>
+  <p>Vibration is a free energy source that is already where sensors are: car dashboards, office vents, windows next to busy roads, and machines (Figure A). A <i>vibration energy harvester</i> turns this shaking into electricity. Everyday vibration is hard to harvest for three reasons:</p>
+  <div class="clear"></div>
+  <ol>
+    <li><b>It is low frequency.</b> Most sources peak below 200 Hz, and vehicles sit even lower: a car instrument panel peaks at 13 Hz (Roundy et al.). Slow vibration needs large, heavy harvesters.</li>
+    <li><b>Its frequency changes.</b> A car's vibration shifts with speed, road surface, and load.</li>
+    <li><b>It is gentle.</b> Road and building vibration is often well under 1 m/s² (Roundy et al.).</li>
+  </ol>
+
+  <div class="fig fl" style="width:3.0in">
+    <img src="figs/resonance.png" alt="Narrow resonance peak of a linear harvester">
+    <div class="cap"><b>Figure B:</b> A beam tuned to 20 Hz with 1.5% damping makes strong power only in a narrow window.<span class="src">Illustrative curve calculated by our team (standard spring-mass model).</span></div>
+  </div>
+  <p>Most harvesters today are <i>linear resonators</i>: a beam built to vibrate at one natural frequency, like a guitar string tuned to one note. They make strong power only when the vibration matches that note (Tang et al.). With light damping, the strong-output window can be less than 1 Hz wide (Figure B). If the car speeds up and the frequency moves, output collapses.</p>
+  <p>Another approach hits or plucks the piezoelectric part with a hard object so it "rings" at its own frequency. This works with slow vibration, but the touching parts wear, and plucking with a hard pick can damage brittle piezoelectric material (Pillatsch et al.).</p>
+  <div class="clear"></div>
+
+  <div class="box tint">
+    <h3>Problem statement</h3>
+    <p style="margin-bottom:5px">Design a harvester that turns slow, changing everyday vibration into electricity for wireless sensors, <b>without any parts that strike or rub each other</b>.</p>
+    <div class="reqs">
+      <span><b>R1</b> Works at low frequency (our target: 16–30 Hz, typical of vehicles)</span>
+      <span><b>R2</b> Non-contact: no parts touch, so nothing wears</span>
+      <span><b>R3</b> Accepts a range of frequencies, not just one</span>
+      <span><b>R4</b> Simple and passive: no motors, batteries, or power to start</span>
+    </div>
+  </div>
+  <div class="pnum">3</div>
+</div></section>
+
+<!-- ============================ D. INFORMATION ============================ -->
+<section class="page"><div class="frame">
+  <h1>Information Gathering: Powering Sensors with Vibration</h1>
+
+  <h2>Why is a solution needed?</h2>
+  <p>Other ambient energy sources fall short in many sensor locations. Solar cells work very well in direct sunlight but are not enough in dim offices or dark places. Heat can power a sensor only with a temperature difference, and Roundy et al. note that it is hard to find more than a 10 °C difference across a 1 cm³ device. Vibration, on the other hand, is present inside cars, engines, buildings, and machines, day or night. Roundy et al. also showed that a harvester's possible power is proportional to <b>A²/ω</b> (acceleration squared divided by frequency). This means the slow, strong fundamental vibration of a source carries the most usable energy, so a harvester should target <b>low frequencies</b>.</p>
+
+  <h2>How does a piezoelectric harvester work?</h2>
+  <div class="fig fr" style="width:2.45in">
+    <svg viewBox="0 0 250 120" role="img" aria-label="Bending a piezoelectric layer makes a voltage">
+      <rect x="6" y="52" width="26" height="46" fill="#9AA3B5"/>
+      <path d="M32 62 Q120 64 214 86" stroke="#1F3A68" stroke-width="7" fill="none"/>
+      <path d="M32 58 Q76 59 110 63" stroke="#C9573A" stroke-width="4" fill="none"/>
+      <path d="M222 50 L222 104" stroke="#1F3A68" stroke-width="1.2" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#1F3A68"/></marker></defs>
+      <text x="40" y="44" font-size="10" fill="#C9573A">PZT layer stretches</text>
+      <text x="140" y="112" font-size="10" fill="#1F3A68">beam bends</text>
+      <path d="M70 66 L70 92 L96 92" stroke="#24282F" stroke-width="1" fill="none"/>
+      <circle cx="104" cy="92" r="8" fill="#fff" stroke="#24282F"/><text x="100" y="96" font-size="10" font-weight="700">V</text>
+      <text x="6" y="112" font-size="9" fill="#5D6576">clamp</text>
+    </svg>
+    <div class="cap"><b>Figure C:</b> Bending stretches the PZT layer, which makes a voltage.<span class="src">Drawn by our team.</span></div>
+  </div>
+  <p>In 1880, Pierre and Jacques Curie found that some crystals make a voltage when they are squeezed or stretched. This is the <i>piezoelectric effect</i> (Erturk and Inman). Modern harvesters bond a thin layer of PZT (a lead zirconate titanate ceramic) to a flexible beam that is clamped at one end (a <i>cantilever</i>). Each time the beam bends, the PZT is strained and makes a voltage (Figure C). Two PZT layers together form a <i>bimorph</i>. PZT is strong in bending but brittle, so it should not be hit or scraped.</p>
+
+  <div class="clear"></div>
+  <h2>How did vibration harvesting develop? (Historical perspective)</h2>
+  <div class="fig" style="margin-top:4px">
+    <svg viewBox="0 0 700 140" role="img" aria-label="Timeline of vibration energy harvesting">
+      <line x1="20" y1="60" x2="680" y2="60" stroke="#1F3A68" stroke-width="2.5"/>
+      <g font-size="10.5" fill="#24282F">
+        <g><circle cx="40" cy="60" r="7" fill="#1F3A68"/><text x="40" y="40" text-anchor="middle" font-weight="700" fill="#1F3A68">1880</text>
+          <text x="20" y="84"><tspan x="20" dy="0">Curie brothers</tspan><tspan x="20" dy="13">discover the</tspan><tspan x="20" dy="13">piezoelectric effect</tspan></text></g>
+        <g><circle cx="150" cy="60" r="7" fill="#1F3A68"/><text x="150" y="40" text-anchor="middle" font-weight="700" fill="#1F3A68">1996</text>
+          <text x="122" y="84"><tspan x="122" dy="0">Williams &amp; Yates</tspan><tspan x="122" dy="13">model the first micro</tspan><tspan x="122" dy="13">vibration generator</tspan></text></g>
+        <g><circle cx="262" cy="60" r="7" fill="#1F3A68"/><text x="262" y="40" text-anchor="middle" font-weight="700" fill="#1F3A68">2003</text>
+          <text x="236" y="84"><tspan x="236" dy="0">Roundy et al.</tspan><tspan x="236" dy="13">measure everyday</tspan><tspan x="236" dy="13">vibration; target low f</tspan></text></g>
+        <g><circle cx="374" cy="60" r="7" fill="#1F3A68"/><text x="374" y="40" text-anchor="middle" font-weight="700" fill="#1F3A68">2008</text>
+          <text x="350" y="84"><tspan x="350" dy="0">Külah &amp; Najafi</tspan><tspan x="350" dy="13">frequency up-conversion</tspan><tspan x="350" dy="13">with magnets + coils</tspan></text></g>
+        <g><circle cx="484" cy="60" r="7" fill="#1F3A68"/><text x="484" y="40" text-anchor="middle" font-weight="700" fill="#1F3A68">2010–11</text>
+          <text x="462" y="84"><tspan x="462" dy="0">Broadband review</tspan><tspan x="462" dy="13">(Tang et al.); plucking</tspan><tspan x="462" dy="13">with picks (Pozzi &amp; Zhu)</tspan></text></g>
+        <g><circle cx="596" cy="60" r="8" fill="#C9573A"/><text x="596" y="40" text-anchor="middle" font-weight="700" fill="#C9573A">2014</text>
+          <text x="574" y="84"><tspan x="574" dy="0">Pillatsch et al.</tspan><tspan x="574" dy="13">pluck piezo beams with</tspan><tspan x="574" dy="13">magnets, no contact</tspan></text></g>
+      </g>
+    </svg>
+    <div class="cap"><b>Figure D:</b> Key steps in vibration energy harvesting.<span class="src">Drawn by our team from the cited sources.</span></div>
+  </div>
+  <p>Early harvesters (Williams and Yates) were simple spring-mass systems tuned to one frequency. Roundy et al. measured real sources and found most of their energy at low frequency. Because a single tuned beam has a narrow window, researchers looked for broadband methods (Tang et al.). Külah and Najafi showed <i>frequency up-conversion</i>: a slow, large part catches and releases small, fast cantilevers, so slow vibration (1–100 Hz) can still drive a fast converter. Pozzi and Zhu plucked piezo bimorphs with steel picks on a knee brace, and Pillatsch et al. replaced the picks with magnets because picks can damage brittle piezo material.</p>
+
+  <div class="box coral">
+    <h3>What we learned</h3>
+    <p style="margin:0">(1) Target low frequency. (2) One tuned beam is too narrow for changing vibration. (3) Up-conversion lets a slow part drive a piezo beam. (4) Magnets can do the plucking without touching. Our three possible solutions follow this path.</p>
+  </div>
+  <div class="pnum">4</div>
+</div></section>
+
+<!-- ============================ E1 ============================ -->
+<section class="page"><div class="frame">
+  <div class="kicker">Possible Solution #1</div>
+  <h1 style="text-align:left;margin-top:2px">Tuned Resonant Piezoelectric Cantilever</h1>
+
+  <div class="fig fr" style="width:3.1in">
+    <svg viewBox="0 0 320 170" role="img" aria-label="Sketch of a resonant cantilever harvester">
+      <rect x="10" y="128" width="300" height="16" rx="2" fill="#C9D0DE"/>
+      <text x="160" y="160" font-size="10" text-anchor="middle" fill="#5D6576">vibrating surface (car body, machine, bridge)</text>
+      <path d="M296 104 v40 M296 104 l-4 7 M296 104 l4 7 M296 144 l-4 -7 M296 144 l4 -7" stroke="#C9573A" stroke-width="1.4" fill="none"/>
+      <rect x="22" y="60" width="34" height="68" fill="#9AA3B5"/>
+      <rect x="56" y="70" width="190" height="5" fill="#1F3A68"/>
+      <rect x="62" y="66" width="70" height="4" fill="#C9573A"/>
+      <rect x="236" y="56" width="28" height="30" rx="2" fill="#5D6576"/>
+            <path d="M56 72 Q150 40 250 46" stroke="#1F3A68" stroke-width="2" fill="none" opacity=".25"/>
+      <path d="M56 74 Q150 100 250 104" stroke="#1F3A68" stroke-width="2" fill="none" opacity=".25"/>
+      <text x="64" y="92" font-size="9.5" fill="#C9573A">PZT bimorph</text>
+      <text x="264" y="118" font-size="9.5" fill="#5D6576" text-anchor="end">tip mass sets frequency</text>
+      <text x="22" y="54" font-size="9.5" fill="#5D6576">clamp</text>
+      <path d="M100 66 L100 22 L150 22" stroke="#24282F" stroke-width="1" fill="none"/>
+      <rect x="150" y="12" width="64" height="20" rx="3" fill="#fff" stroke="#1F3A68"/><text x="182" y="26" font-size="9.5" text-anchor="middle" fill="#1F3A68">to sensor</text>
+    </svg>
+    <div class="cap"><b>Figure E:</b> A single beam with a tip mass, tuned to one frequency.<span class="src">Sketch drawn by our team; not to scale.</span></div>
+  </div>
+
+  <h2>What is this solution?</h2>
+  <p>This is the standard vibration harvester. A flexible beam with a PZT bimorph near the clamp and a weight (tip mass) at the free end is bolted to a vibrating surface. The tip mass and beam stiffness are chosen so the beam's natural frequency matches the source, for example 18 Hz for a vehicle. When the surface shakes at that frequency, the beam swings much more than the surface itself, bends the PZT, and makes electricity for a sensor.</p>
+
+  <h2>Scientific basis</h2>
+  <ul>
+    <li><b>Resonance:</b> natural frequency f = (1/2π)·√(k/m), where k is beam stiffness and m is the moving mass. At resonance, motion is amplified by about 1/(2ζ), where ζ is the damping ratio. With ζ = 0.015, that is about 33 times (Williams and Yates; Roundy et al.).</li>
+    <li><b>Narrow window:</b> the strong-output band is only about 2ζ·f wide, about 0.5 Hz for an 18 Hz beam (Tang et al.).</li>
+    <li><b>Low frequency needs size:</b> to lower f, the beam must be longer, softer, or heavier, which makes the harvester larger.</li>
+  </ul>
+
+  <div class="fig fl" style="width:3.0in">
+    <img src="figs/plain_sweep.png" alt="Simulated voltage of a plain beam across frequency">
+    <div class="cap"><b>Figure F:</b> Our model of a plain 105 mm piezo beam (no magnets) shaken at 2 m/s².<span class="src">Simulated by our team (two-spring model with piezo circuit, 1 MΩ load).</span></div>
+  </div>
+  <h2>Engineering feasibility and our test</h2>
+  <p>This is the easiest design to build: one 3D-printed PETG beam, one PZT bimorph, and a weight. We tested the idea with our own computer model. When we shook our 105 mm piezo beam without any magnets, it reached about <b>21 V peak at its 18 Hz natural frequency</b>, but only <b>0.7 V at 10 Hz</b> (Figure F). A small change in the source frequency removes most of the output.</p>
+  <div class="clear"></div>
+
+  <div class="two">
+    <div class="pro"><h3 style="font-family:Outfit,Arial,sans-serif;font-size:10.2pt;margin:2px 0">Advantages</h3>
+      <ul><li>Simplest, cheapest design with few parts</li><li>No contact, so nothing wears</li><li>Very strong output when the frequency matches exactly</li></ul></div>
+    <div class="con"><h3 style="font-family:Outfit,Arial,sans-serif;font-size:10.2pt;margin:2px 0">Disadvantages</h3>
+      <ul><li>Works in a window under 1 Hz wide</li><li>Output collapses when a car changes speed or road</li><li>Tuning to low frequency makes the beam long and heavy</li></ul></div>
+  </div>
+
+  <h2>How it meets our requirements</h2>
+  <table class="meets">
+    <tr><td>R1 Low frequency</td><td><span class="i h"></span></td><td>Possible, but only with a long, heavy beam.</td></tr>
+    <tr><td>R2 Non-contact</td><td><span class="i f"></span></td><td>Nothing touches.</td></tr>
+    <tr><td>R3 Range of frequencies</td><td><span class="i"></span></td><td>Fails: strong output only near one frequency.</td></tr>
+    <tr><td>R4 Simple and passive</td><td><span class="i f"></span></td><td>Fully passive.</td></tr>
+  </table>
+  <div class="legend"><span class="i f"></span> meets &nbsp; <span class="i h"></span> partly meets &nbsp; <span class="i"></span> does not meet. Scores are our team's judgment from the cited sources and our model.</div>
+  <div class="pnum">5</div>
+</div></section>
+
+<!-- ============================ E2 ============================ -->
+<section class="page"><div class="frame">
+  <div class="kicker">Possible Solution #2</div>
+  <h1 style="text-align:left;margin-top:2px">Contact-Plucked Frequency Up-Converter</h1>
+
+  <div class="fig fr" style="width:3.15in">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Sketch of a contact-plucked harvester">
+      <rect x="10" y="150" width="300" height="14" rx="2" fill="#C9D0DE"/>
+      <rect x="20" y="40" width="28" height="110" fill="#9AA3B5"/>
+      <rect x="48" y="52" width="170" height="4" fill="#5D6576"/>
+      <rect x="206" y="40" width="26" height="28" rx="2" fill="#5D6576"/>
+      <path d="M232 60 L252 78 L240 80 Z" fill="#24282F"/>
+      <text x="56" y="44" font-size="9.5" fill="#5D6576">slow driver beam + heavy mass</text>
+      <rect x="282" y="74" width="26" height="76" fill="#9AA3B5"/>
+      <rect x="196" y="84" width="86" height="5" fill="#1F3A68"/>
+      <rect x="244" y="80" width="38" height="4" fill="#C9573A"/>
+      <text x="196" y="102" font-size="9.5" fill="#1F3A68">fast piezo beam</text>
+      <g transform="translate(246 82)"><path d="M0 -14 L4 -5 L14 -6 L7 1 L12 10 L2 5 L-6 12 L-4 2 L-13 -3 L-3 -5 Z" fill="#FBE9E3" stroke="#C9573A" stroke-width="1.3"/></g>
+      <text x="150" y="128" font-size="10" fill="#C9573A" font-weight="700">pick hits beam:</text>
+      <text x="150" y="141" font-size="10" fill="#C9573A">wear, noise, cracking risk</text>
+      <path d="M200 120 L238 92" stroke="#C9573A" stroke-width="1" marker-end="url(#ac)"/>
+      <defs><marker id="ac" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#C9573A"/></marker></defs>
+      <text x="252" y="70" font-size="9.5" fill="#24282F">pick</text>
+    </svg>
+    <div class="cap"><b>Figure G:</b> A slow driver beam with a hard pick plucks a faster piezo beam.<span class="src">Sketch drawn by our team; not to scale.</span></div>
+  </div>
+
+  <h2>What is this solution?</h2>
+  <p>This design separates "catching" the vibration from "converting" it. A soft driver beam with a heavy mass is tuned low, so it swings even in slow vibration. A hard pick (plectrum) on its tip catches the end of a stiffer piezo beam, bends it, and then slips off. Freed, the piezo beam vibrates back and forth at its own higher natural frequency, like a plucked guitar string, and its PZT makes electricity. Pozzi and Zhu used this idea with steel picks on a knee brace, plucking PZT bimorphs during walking.</p>
+
+  <h2>Scientific basis</h2>
+  <ul>
+    <li><b>Frequency up-conversion:</b> energy collected slowly is released into a fast-ringing piezo beam, where conversion works better (Külah and Najafi; Tang et al.).</li>
+    <li><b>Wide input range:</b> each pluck rings at the piezo beam's own frequency, so the input does not have to match exactly. Up-conversion is one of the main broadband methods reviewed by Tang et al.</li>
+    <li><b>Energy per pluck</b> depends on how far the pick bends the piezo beam before letting go, which is set by how much the two parts overlap.</li>
+  </ul>
+
+  <h2>Engineering feasibility</h2>
+  <p>Plucked and impact harvesters have been built and tested in research labs (Pozzi and Zhu; Külah and Najafi). Building one needs a precise overlap between the pick and the beam, a pick material that is hard but smooth, and a strong clamp. The main problem is durability. The pick rubs and strikes the beam thousands of times a day. Pillatsch et al. state that plucking with plectra can damage the brittle piezo material, which is why they moved to magnets. As the pick wears, the overlap shrinks and each pluck gets weaker, so output drops over time. Contact also makes clicking noise and loses some energy as heat and sound at each hit.</p>
+
+  <div class="two">
+    <div class="pro"><h3 style="font-family:Outfit,Arial,sans-serif;font-size:10.2pt;margin:2px 0">Advantages</h3>
+      <ul><li>Works with very slow vibration</li><li>Accepts a wide range of input frequencies</li><li>Proven idea in published experiments</li></ul></div>
+    <div class="con"><h3 style="font-family:Outfit,Arial,sans-serif;font-size:10.2pt;margin:2px 0">Disadvantages</h3>
+      <ul><li>Parts touch every cycle: wear and fatigue</li><li>Risk of chipping or cracking brittle PZT</li><li>Output fades as the pick wears; clicking noise</li></ul></div>
+  </div>
+
+  <h2>How it meets our requirements</h2>
+  <table class="meets">
+    <tr><td>R1 Low frequency</td><td><span class="i f"></span></td><td>The soft driver beam swings in slow vibration.</td></tr>
+    <tr><td>R2 Non-contact</td><td><span class="i"></span></td><td>Fails: the pick strikes the piezo beam on every pluck.</td></tr>
+    <tr><td>R3 Range of frequencies</td><td><span class="i f"></span></td><td>The piezo rings at its own frequency regardless of input.</td></tr>
+    <tr><td>R4 Simple and passive</td><td><span class="i f"></span></td><td>Passive, but the pick overlap must be set precisely and maintained.</td></tr>
+  </table>
+  <div class="legend"><span class="i f"></span> meets &nbsp; <span class="i h"></span> partly meets &nbsp; <span class="i"></span> does not meet. Scores are our team's judgment from the cited sources.</div>
+  <div class="pnum">6</div>
+</div></section>
+
+<!-- ============================ E3 ============================ -->
+<section class="page"><div class="frame">
+  <div class="kicker">Possible Solution #3</div>
+  <h1 style="text-align:left;margin-top:2px">MagPluck: Magnetically Plucked Dual Cantilever</h1>
+
+  <h2 style="margin-top:4px">What is this solution?</h2>
+  <p>MagPluck keeps the good idea of Solution #2 (a slow driver plucks a piezo beam) but <b>replaces the pick with a pair of magnets</b>, so nothing ever touches. Two cantilevers share one base. The <b>driver beam</b> carries a large magnet and is tuned to about 16 Hz, so it swings with slow vehicle vibration. The <b>piezo beam</b> carries a PZT bimorph and a small magnet. The two magnets face each other across an air gap of about 39 mm (Figure H).</p>
+
+  <div class="fig">
+    <svg style="width:90%;margin:0 auto" viewBox="0 0 690 150" role="img" aria-label="Three steps of a magnetic pluck">
+      <defs><marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#C9573A"/></marker></defs>
+      <!-- panel 1 -->
+      <g>
+        <rect x="8" y="10" width="20" height="104" fill="#9AA3B5"/>
+        <path d="M28 30 Q120 36 186 56" stroke="#5D6576" stroke-width="4" fill="none"/>
+        <rect x="174" y="56" width="26" height="12" fill="#1F3A68"/>
+        <path d="M28 106 Q120 104 186 92" stroke="#1F3A68" stroke-width="4" fill="none"/>
+        <rect x="35" y="99" width="46" height="3" fill="#C9573A"/>
+        <rect x="180" y="84" width="12" height="7" fill="#1F3A68"/>
+        <path d="M187 70 L187 82" stroke="#C9573A" stroke-width="1.6" marker-end="url(#am)"/>
+        <text x="110" y="132" font-size="11" text-anchor="middle" fill="#1F3A68" font-weight="700">1. Driver swings close</text>
+        <text x="110" y="145" font-size="10" text-anchor="middle" fill="#5D6576">magnetic pull bends the piezo beam</text>
+      </g>
+      <!-- panel 2 -->
+      <g transform="translate(234 0)">
+        <rect x="8" y="10" width="20" height="104" fill="#9AA3B5"/>
+        <path d="M28 30 Q120 22 186 6" stroke="#5D6576" stroke-width="4" fill="none"/>
+        <rect x="174" y="6" width="26" height="12" fill="#1F3A68"/>
+        <path d="M28 106 Q120 106 186 104" stroke="#1F3A68" stroke-width="4" fill="none"/>
+        <rect x="35" y="99" width="46" height="3" fill="#C9573A"/>
+        <rect x="180" y="96" width="12" height="7" fill="#1F3A68"/>
+        <path d="M206 30 L206 10" stroke="#5D6576" stroke-width="1.4" marker-end="url(#am)"/>
+        <text x="110" y="132" font-size="11" text-anchor="middle" fill="#1F3A68" font-weight="700">2. Driver swings away</text>
+        <text x="110" y="145" font-size="10" text-anchor="middle" fill="#5D6576">pull fades fast (1/d⁴): beam is released</text>
+      </g>
+      <!-- panel 3 -->
+      <g transform="translate(468 0)">
+        <rect x="8" y="10" width="20" height="104" fill="#9AA3B5"/>
+        <path d="M28 30 Q120 26 186 20" stroke="#5D6576" stroke-width="4" fill="none" opacity=".6"/>
+        <path d="M28 106 Q120 98 186 86" stroke="#1F3A68" stroke-width="3" fill="none" opacity=".3"/>
+        <path d="M28 106 Q120 106 186 104" stroke="#1F3A68" stroke-width="4" fill="none"/>
+        <path d="M28 106 Q120 114 186 120" stroke="#1F3A68" stroke-width="3" fill="none" opacity=".3"/>
+        <rect x="35" y="99" width="46" height="3" fill="#C9573A"/>
+        <path d="M120 60 L110 80 L120 80 L112 98" stroke="#C9573A" stroke-width="2.4" fill="none" stroke-linejoin="round"/>
+        <text x="110" y="132" font-size="11" text-anchor="middle" fill="#1F3A68" font-weight="700">3. Piezo beam rings</text>
+        <text x="110" y="145" font-size="10" text-anchor="middle" fill="#5D6576">PZT makes voltage; nothing touched</text>
+      </g>
+    </svg>
+    <div class="cap"><b>Figure H:</b> One magnetic pluck in three steps (driver beam grey, piezo beam navy, PZT coral).<span class="src">Sketch drawn by our team; not to scale.</span></div>
+  </div>
+
+  <h2>Scientific basis</h2>
+  <div class="fig fr" style="width:3.05in">
+    <img src="figs/magnet_sweep.png" alt="Voltage with and without magnets across frequency">
+    <div class="cap"><b>Figure I:</b> Our 85 mm version shaken at 2 m/s², with and without magnets.<span class="src">Simulated by our team; none of these runs had the magnets touch.</span></div>
+  </div>
+  <ul>
+    <li><b>Steep magnetic force:</b> the pull between two magnets facing each other is F = C/d⁴. Halving the gap makes the pull 16 times stronger, so a modest driver swing turns into a large change in force: a pluck.</li>
+    <li><b>Snap safety rule:</b> if the gap gets too small, the pull grows faster than the beam can resist (4C/d⁵ &gt; k) and the magnets snap together. We keep the closest approach at least <b>1.5 times</b> this snap distance.</li>
+  </ul>
+
+  <h2>Engineering feasibility and our model</h2>
+  <p>All parts are buildable: 3D-printed PETG beams, off-the-shelf N52 magnets, and a commercial PZT bimorph. Like Külah and Najafi and Pillatsch et al., a slow part releases a faster one, but through a magnetic field. We checked the design with a computer model of both beams, the magnetic force, and the piezo circuit:</p>
+  <ul>
+    <li><b>We found and fixed a sizing error.</b> Our first calculation had the snap distance about 2.4 times too small. At the original 8–10 mm gap, the model showed the magnets snapping together. A shorter, stiffer driver with a larger magnet fixed it.</li>
+    <li><b>No contact:</b> in our 1,278-run frequency sweep (5–40 Hz), the magnets never touched.</li>
+    <li><b>More output:</b> at the driver's frequency, magnets raised output <b>2.1 to 3.9 times</b> compared with the same beams without magnets, adding a second working peak (Figure I).</li>
+  </ul>
+  <div class="clear"></div>
+  <table class="meets" style="margin-top:4px">
+    <tr><td>R1 Low frequency</td><td><span class="i f"></span></td><td>The driver is tuned to about 16 Hz; the piezo beam stays at 18–26 Hz.</td></tr>
+    <tr><td>R2 Non-contact</td><td><span class="i f"></span></td><td>Magnets pluck across an air gap kept at 1.5 times the snap distance.</td></tr>
+    <tr><td>R3 Range of frequencies</td><td><span class="i h"></span></td><td>Two working peaks instead of one; full plucks so far only near the driver's frequency.</td></tr>
+    <tr><td>R4 Simple and passive</td><td><span class="i f"></span></td><td>No motors or power needed; only the gap must be set once.</td></tr>
+  </table>
+  <div class="legend"><span class="i f"></span> meets &nbsp; <span class="i h"></span> partly meets &nbsp; <span class="i"></span> does not meet. Scores are our team's judgment from the cited sources and our model.</div>
+  <div class="pnum">7</div>
+</div></section>
+
+<!-- ============================ DESCRIPTION + DIGITAL MODEL ============================ -->
+<section class="page"><div class="frame">
+  <h1>Most Plausible Solution: Written Description and Digital Model</h1>
+  <p>Our most plausible solution is <b>MagPluck</b> (Solution #3). It is a small, passive harvester that bolts onto a vibrating surface such as a car body panel. It turns slow vibration into electricity through a magnetic pluck, so no parts ever strike or rub each other. Figure J shows our digital model of the 105 mm version, drawn to scale from our design numbers.</p>
+
+  <div class="fig" style="margin-top:2px">
+    <svg viewBox="0 0 700 335" role="img" aria-label="Dimensioned side view of the MagPluck digital model">
+      <defs>
+        <marker id="d1" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9z" fill="#5D6576"/></marker>
+        <marker id="d2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9z" fill="#C9573A"/></marker>
+        <pattern id="hat" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9AA3B5" stroke-width="1.2"/></pattern>
+      </defs>
+      <rect x="30" y="282" width="400" height="16" fill="url(#hat)" stroke="#5D6576"/>
+      <!-- riser (sits beside the piezo beam, drawn behind it) -->
+      <rect x="157" y="86" width="34" height="196" fill="#E4E8F0" stroke="#8a93a6" stroke-dasharray="4 3"/>
+      <rect x="157" y="74" width="34" height="8" fill="#9AA3B5" stroke="#5D6576"/>
+      <text transform="translate(178 200) rotate(-90)" font-size="10" fill="#5D6576" text-anchor="middle">riser block (beside piezo beam)</text>
+      <!-- piezo clamp + beam -->
+      <rect x="40" y="226" width="34" height="56" fill="#C9D0DE" stroke="#5D6576"/>
+      <rect x="40" y="218" width="34" height="8" fill="#9AA3B5" stroke="#5D6576"/>
+      <text x="57" y="211" font-size="10" text-anchor="middle" fill="#5D6576">clamp</text>
+      <rect x="74" y="226" width="315" height="3" fill="#1F3A68"/>
+      <rect x="74" y="222.5" width="120" height="3.5" fill="#C9573A"/>
+      <rect x="383" y="220" width="12" height="6" fill="#1F3A68"/>
+      <!-- driver -->
+      <rect x="191" y="81.5" width="198" height="4.5" fill="#5D6576"/>
+      <rect x="370" y="86" width="38" height="18" fill="#1F3A68"/>
+      <!-- dimensions -->
+      <line x1="74" y1="312" x2="389" y2="312" stroke="#5D6576" marker-start="url(#d1)" marker-end="url(#d1)"/>
+      <line x1="74" y1="232" x2="74" y2="318" stroke="#8a93a6" stroke-dasharray="2 2"/><line x1="389" y1="232" x2="389" y2="318" stroke="#8a93a6" stroke-dasharray="2 2"/>
+      <text x="230" y="328" font-size="11" text-anchor="middle" fill="#24282F">piezo beam 105 mm</text>
+      <line x1="191" y1="62" x2="389" y2="62" stroke="#5D6576" marker-start="url(#d1)" marker-end="url(#d1)"/>
+      <text x="290" y="56" font-size="11" text-anchor="middle" fill="#24282F">driver beam 66 mm</text>
+      <line x1="420" y1="104" x2="420" y2="220" stroke="#C9573A" marker-start="url(#d2)" marker-end="url(#d2)"/>
+      <line x1="408" y1="104" x2="426" y2="104" stroke="#C9573A" stroke-dasharray="2 2"/>
+      <line x1="395" y1="220" x2="426" y2="220" stroke="#C9573A" stroke-dasharray="2 2"/>
+      <text x="412" y="160" font-size="11" fill="#C9573A" text-anchor="end" font-weight="700">38.6 mm</text>
+      <text x="412" y="173" font-size="10" fill="#C9573A" text-anchor="end">air gap at rest</text>
+      <!-- callouts -->
+      <g font-size="10.5" fill="#24282F">
+        <line x1="408" y1="95" x2="466" y2="92" stroke="#8a93a6"/><text x="470" y="88"><tspan font-weight="700" fill="#1F3A68">Driver magnet</tspan><tspan x="470" dy="13">N52, Ø12.7 × 6 mm</tspan></text>
+        <line x1="340" y1="84" x2="466" y2="132" stroke="#8a93a6"/><text x="470" y="130"><tspan font-weight="700" fill="#1F3A68">Driver beam</tspan><tspan x="470" dy="13">PETG, 66 × 10 × 1.5 mm, tuned to 16.1 Hz</tspan></text>
+        <line x1="395" y1="222" x2="466" y2="200" stroke="#8a93a6"/><text x="470" y="196"><tspan font-weight="700" fill="#1F3A68">Piezo magnet</tspan><tspan x="470" dy="13">N52, Ø4 × 2 mm</tspan></text>
+        <line x1="330" y1="229" x2="466" y2="244" stroke="#8a93a6"/><text x="470" y="242"><tspan font-weight="700" fill="#1F3A68">Piezo beam</tspan><tspan x="470" dy="13">PETG, 105 × 10 × 1 mm, 18.0 Hz</tspan></text>
+        <line x1="430" y1="290" x2="466" y2="290" stroke="#8a93a6"/><text x="470" y="286"><tspan font-weight="700" fill="#1F3A68">Base</tspan><tspan x="470" dy="13">bolts to the vibrating surface</tspan></text>
+        <line x1="100" y1="221" x2="100" y2="168" stroke="#8a93a6"/><text x="36" y="150"><tspan font-weight="700" fill="#C9573A">PZT bimorph</tspan><tspan x="36" dy="13">40 × 5 mm, near clamp</tspan></text>
+      </g>
+    </svg>
+    <div class="cap"><b>Figure J:</b> MagPluck digital model, side view (105 mm version), drawn to scale. The riser block sits beside the piezo beam and holds the driver so the two magnet centers line up.<span class="src">Drawn by our team from our design calculations.</span></div>
+  </div>
+
+  <div class="two" style="margin-top:4px">
+    <div>
+      <h2 style="margin-top:0">How it works</h2>
+      <ol>
+        <li>The base shakes with the car or machine. The soft driver beam, tuned to 16.1 Hz, swings up and down several millimeters.</li>
+        <li>As the driver comes down, its large magnet pulls the small magnet on the piezo beam, bending the beam toward it.</li>
+        <li>As the driver swings back up, the pull weakens with the fourth power of distance, so the piezo beam is let go.</li>
+        <li>The piezo beam springs back and vibrates at its own 18 Hz frequency, straining the PZT bimorph.</li>
+        <li>Wires carry the alternating voltage to a rectifier and storage capacitor that power a wireless sensor.</li>
+      </ol>
+    </div>
+    <div>
+      <h2 style="margin-top:0">Design numbers (105 mm version)</h2>
+      <table class="spec">
+        <tr><td>Driver / piezo natural frequency</td><td>16.1 Hz / 18.0 Hz</td></tr>
+        <tr><td>Snap distance (magnets would jump together)</td><td>21.3 mm</td></tr>
+        <tr><td>Closest approach allowed (1.5 × snap)</td><td>32.0 mm</td></tr>
+        <tr><td>Magnetic force margin needed / achieved</td><td>1.5× / 1.61×</td></tr>
+        <tr><td>Model output at 2 m/s², 1 MΩ load</td><td>7.9 V peak, about 28 µW average</td></tr>
+        <tr><td>Other versions (piezo beam length)</td><td>85 mm and 95 mm, same idea</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="pnum">8</div>
+</div></section>
+
+<!-- ============================ WHY SELECTED ============================ -->
+<section class="page"><div class="frame">
+  <h1>Why MagPluck Was Selected</h1>
+  <p>We compared the three possible solutions against the four requirements from our problem statement. MagPluck is the only one that meets the low-frequency and non-contact requirements at the same time, and it adds a working band that a single tuned beam does not have.</p>
+
+  <table class="cmp">
+    <tr><th>Solution</th><th class="c">R1</th><th class="c">R2</th><th class="c">R3</th><th class="c">R4</th><th>Reason for our decision</th></tr>
+    <tr><td>#1 Tuned resonant cantilever</td><td class="c"><span class="i h"></span></td><td class="c"><span class="i f"></span></td><td class="c"><span class="i"></span></td><td class="c"><span class="i f"></span></td><td>Not selected: simple and contact-free, but strong output only within about 0.5 Hz of one frequency; our model gave 21 V at 18 Hz but 0.7 V at 10 Hz.</td></tr>
+    <tr><td>#2 Contact-plucked up-converter</td><td class="c"><span class="i f"></span></td><td class="c"><span class="i"></span></td><td class="c"><span class="i f"></span></td><td class="c"><span class="i f"></span></td><td>Not selected: handles slow, changing vibration, but the pick strikes the brittle piezo every cycle, so it wears, clicks, and can crack (Pillatsch et al.).</td></tr>
+    <tr class="sel"><td>#3 MagPluck</td><td class="c"><span class="i f"></span></td><td class="c"><span class="i f"></span></td><td class="c"><span class="i h"></span></td><td class="c"><span class="i f"></span></td><td><b>Selected:</b> the pluck of #2 with the no-contact benefit of #1. Magnets raised output 2.1–3.9× over the same beams without magnets, and never touched in our model.</td></tr>
+  </table>
+  <div class="legend"><span class="i f"></span> meets &nbsp; <span class="i h"></span> partly meets &nbsp; <span class="i"></span> does not meet. Scores are our team's judgment from the cited sources and our model.</div>
+
+  <div class="fig fr" style="width:3.0in;margin-top:10px">
+    <img src="figs/pluck.png" alt="Simulated single magnetic pluck: driver swings away and piezo beam rings">
+    <div class="cap"><b>Figure K:</b> One magnetic pluck in our model (105 mm version). The piezo beam is pulled 0.70 mm, then rings at 18 Hz after release.<span class="src">Simulated by our team; tip motion of the piezo beam drawn 5 times larger.</span></div>
+  </div>
+  <h2 style="margin-top:12px">Why is it more efficient?</h2>
+  <p>A plain tuned beam (Solution #1) wastes most of the time it spends off its one frequency. In MagPluck, the driver beam collects the slow vibration and hands its energy to the piezo beam through the magnetic pull. In our model, at the driver's 16 Hz frequency, the same piezo beam made <b>3.3–7.9 V peak with magnets versus 0.8–3.7 V without them</b>. Unlike Solution #2, no energy is lost to impact, and the parts do not wear down, so the output should not fade over the harvester's life.</p>
+  <p>Figure K shows the pluck itself. When the driver magnet swings away, the piezo beam keeps vibrating at its own frequency, keeping 73% of the pulled distance as free motion and producing about 1.8 V in one release.</p>
+
+  <h2>What is new about MagPluck?</h2>
+  <p>Magnetic plucking is a known idea (Külah and Najafi; Pillatsch et al.). What our team adds is a simple two-beam design built from printed PETG and stock parts, sized for the 16–30 Hz band of vehicles, with a <b>snap safety rule</b> (closest approach at least 1.5 times the snap distance) that our model showed is needed to keep the magnets from sticking together.</p>
+  <div class="clear"></div>
+
+  <div class="box coral">
+    <h3>Limitations and next steps</h3>
+    <ul style="margin-bottom:0">
+      <li><b>Narrow pluck band:</b> full plucks so far happen only within about 1 Hz of the driver's frequency. Next we will test a sharper release, such as a stop that lets the magnets snap off, or a sweep-past magnet layout.</li>
+      <li><b>Gentle road vibration:</b> at very gentle levels (about 0.1–0.6 m/s²) our model's driver does not swing far enough to pluck. The sharper release above is aimed at this.</li>
+      <li><b>Model, not hardware:</b> all numbers come from our computer model at 2 m/s². The piezo coupling should be measured on a real beam, and results could differ by about 2 times.</li>
+    </ul>
+  </div>
+  <div class="pnum">9</div>
+</div></section>
+
+<!-- ============================ WORKS CITED ============================ -->
+<section class="page"><div class="frame">
+  <h1>Resources (Works Cited):</h1>
+  <div class="refs">
+    <p>Erturk, Alper, and Daniel J. Inman. <i>Piezoelectric Energy Harvesting</i>. John Wiley &amp; Sons, 2011. https://doi.org/10.1002/9781119991151.</p>
+    <p>IoT Analytics. "State of IoT 2025: Number of Connected IoT Devices Growing 14% to 21.1 Billion Globally." <i>IoT Analytics</i>, Oct. 2025, iot-analytics.com/number-connected-iot-devices/.</p>
+    <p>Külah, Haluk, and Khalil Najafi. "Energy Scavenging From Low-Frequency Vibrations by Using Frequency Up-Conversion for Wireless Sensor Applications." <i>IEEE Sensors Journal</i>, vol. 8, no. 3, 2008, pp. 261–68. https://doi.org/10.1109/JSEN.2008.917125.</p>
+    <p>Pillatsch, Pit, Eric M. Yeatman, and Andrew S. Holmes. "A Piezoelectric Frequency Up-Converting Energy Harvester with Rotating Proof Mass for Human Body Applications." <i>Sensors and Actuators A: Physical</i>, vol. 206, 2014, pp. 178–85. https://doi.org/10.1016/j.sna.2013.10.003.</p>
+    <p>Pozzi, Michele, and Meiling Zhu. "Plucked Piezoelectric Bimorphs for Knee-Joint Energy Harvesting: Modelling and Experimental Validation." <i>Smart Materials and Structures</i>, vol. 20, no. 5, 2011, article 055007. https://doi.org/10.1088/0964-1726/20/5/055007.</p>
+    <p>Roundy, Shad, Paul K. Wright, and Jan Rabaey. "A Study of Low Level Vibrations as a Power Source for Wireless Sensor Nodes." <i>Computer Communications</i>, vol. 26, no. 11, 2003, pp. 1131–44. https://doi.org/10.1016/S0140-3664(02)00248-7.</p>
+    <p>Tang, Lihua, Yaowen Yang, and Chee Kiong Soh. "Toward Broadband Vibration-Based Energy Harvesting." <i>Journal of Intelligent Material Systems and Structures</i>, vol. 21, no. 18, 2010, pp. 1867–97. https://doi.org/10.1177/1045389X10390249.</p>
+    <p>U.S. Environmental Protection Agency. <i>An Analysis of Lithium-ion Battery Fires in Waste Management and Recycling</i>. EPA 530-R-21-002, July 2021, www.epa.gov/system/files/documents/2021-07/lithium-ion-battery-report-update-7.01_508.pdf.</p>
+    <p>Washington TSA. "Engineering Design." <i>Washington Technology Student Association</i>, 2026, www.washingtontsa.org/high-school-events/engineering-design. Accessed 18 Nov. 2026.</p>
+    <p>Williams, C. B., and R. B. Yates. "Analysis of a Micro-Electric Generator for Microsystems." <i>Sensors and Actuators A: Physical</i>, vol. 52, no. 1–3, 1996, pp. 8–11. https://doi.org/10.1016/0924-4247(96)80118-X.</p>
+    <p>Yenamandra, Akhil. "Design and Optimization of a Magnetically Plucked Piezoelectric Vibration Energy Harvester." Poster HS-EGSD-0192. Our team's starting design, re-checked and redesigned in this portfolio.</p>
+  </div>
+  <p style="font-size:8.7pt;margin-top:10px"><b>Resource types (11 total):</b> peer-reviewed journal articles (6), a technical book, a government report (U.S. EPA), two websites (IoT Analytics and Washington TSA), and our team's earlier poster. All figures are original drawings, charts, and simulations made by our team from the cited data.</p>
+  <div class="pnum">10</div>
+</div></section>
+
+</body>
+</html>

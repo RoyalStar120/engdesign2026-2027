@@ -1,0 +1,157 @@
+## drv
+
+| Config | Driver bimorph | position from clamp (mm) | driver damping loss (mW) | kappa^2 driver | P driver bimorph (uW) | P piezo (uW) | total / piezo-only | driver tip (mm) | V peak (driver) | PZT strain (ue) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 85 mm | no driver bimorph | - | 4.21 | - | - | 3.8 | - | 5.61 | 3.29 | - |
+| 85 mm | at clamp, no strain limit | 0.0-40.0 | 19.71 | 0.0168 | 5483 | 2.1 | 1430.1x | 5.08 | 125.4 | 1699 |
+| 85 mm | best within 500 ue strain | 10.0-30.0 | 7.66 | 0.0023 | 291 | 3.8 | 76.9x | 5.97 | 41.1 | 481 |
+| 95 mm | no driver bimorph | - | 3.29 | - | - | 5.3 | - | 5.43 | 3.60 | - |
+| 95 mm | at clamp, no strain limit | 0.0-20.0 | 13.43 | 0.0132 | 2943 | 3.2 | 551.5x | 5.12 | 129.4 | 1552 |
+| 95 mm | best within 500 ue strain | 10.0-30.0 | 5.71 | 0.0021 | 202 | 5.1 | 38.8x | 5.75 | 34.0 | 454 |
+| 105 mm | no driver bimorph | - | 2.24 | - | - | 27.8 | - | 5.16 | 7.92 | - |
+| 105 mm | at clamp, no strain limit | 0.0-40.0 | 10.60 | 0.0138 | 2421 | 17.1 | 87.7x | 5.17 | 83.5 | 1060 |
+| 105 mm | best within 500 ue strain | 2.5-22.5 | 5.35 | 0.0038 | 340 | 24.9 | 13.1x | 5.66 | 44.6 | 483 |
+
+## law
+
+| Predictor | designs | median predicted / simulated | median |error| | 90th pct |error| | R² (log gain) |
+|---|---|---|---|---|---|
+| Gain law, eq. 20 (closed form) | 120 | 1.89 | 89% | 1117% | -3.49 |
+| Exact linear two-mode model | 120 | 0.86 | 14% | 43% | 0.90 |
+| Gain law, designs with simulated gain < 6 | 33 | - | 96% | - | - |
+
+## robust
+
+| Config | Design | gain, nominal | median gain | 5th pct gain | median gain-law value | P nominal (uW) | median P (uW) | 5th pct P (uW) | below 1.5x snap | below 1.2x snap | inside snap gap | median gain, nonlinear sim (48) | median P, nonlinear sim (uW) | latched, sim |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 85 mm | current redesign | 9.9 | 3.2 | 1.9 | 3.3 | 3.3 | 1.1 | 0.25 | 11% | 0.0% | 0.0% | 3.1 | 1.0 | 0% |
+| 85 mm | max median gain | 52.2 | 14.6 | 6.0 | 31.9 | 83.7 | 24.9 | 4.09 | 100% | 1.8% | 0.0% | 13.2 | 21.1 | 0% |
+| 85 mm | max median power | 20.2 | 7.2 | 0.4 | 23.7 | 470.3 | 60.3 | 10.72 | 100% | 0.0% | 0.0% | 8.9 | 57.9 | 0% |
+| 85 mm | max median gain-law value | 37.9 | 11.6 | 1.7 | 49.9 | 101.3 | 40.3 | 7.47 | 100% | 0.8% | 0.0% | - | - | - |
+| 95 mm | current redesign | 5.4 | 2.2 | 1.6 | 2.3 | 4.1 | 1.7 | 0.40 | 11% | 0.0% | 0.0% | 2.2 | 1.5 | 0% |
+| 95 mm | max median gain | 26.1 | 8.2 | 3.7 | 15.5 | 82.1 | 25.4 | 4.11 | 98% | 2.0% | 0.0% | 7.3 | 25.4 | 0% |
+| 95 mm | max median power | 8.0 | 3.4 | 0.3 | 6.1 | 485.9 | 67.7 | 12.14 | 99% | 0.2% | 0.0% | 5.5 | 77.3 | 0% |
+| 95 mm | max median gain-law value | 4.4 | 3.1 | 0.6 | 40.7 | 9.6 | 7.8 | 2.01 | 100% | 5.0% | 0.0% | - | - | - |
+| 105 mm | current redesign | 3.2 | 1.9 | 1.5 | 2.3 | 16.2 | 9.2 | 1.65 | 10% | 0.0% | 0.0% | 1.9 | 9.3 | 0% |
+| 105 mm | max median gain | 12.8 | 4.4 | 0.5 | 8.6 | 128.6 | 42.4 | 6.50 | 85% | 1.5% | 0.0% | 4.4 | 40.7 | 0% |
+| 105 mm | max median power | 5.5 | 2.4 | 0.3 | 3.6 | 413.6 | 55.6 | 9.55 | 83% | 1.2% | 0.0% | 3.9 | 85.2 | 0% |
+| 105 mm | max median gain-law value | 5.3 | 3.7 | 0.5 | 21.2 | 26.2 | 22.7 | 4.97 | 100% | 3.8% | 0.0% | - | - | - |
+
+## robust_design
+
+| Config | Design | driver L (mm) | t (mm) | b (mm) | driver magnet (mm) | added mass (g) | piezo magnet (mm) | gap safety factor | closest approach (mm) | rest gap (mm) | f_d (Hz) | f_p (Hz) | margin |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 85 mm | current redesign | 56 | 1.5 | 10 | 12.7 x 8 | 2 | 6 x 3.0 | 1.5 (two-body) | 37.2 | 43.8 | 16.1 | 25.7 | 1.71 |
+| 85 mm | max median gain | 98 | 3.0 | 20 | 12.7 x 8 | 3 | 4 x 3.0 | 1.35 | 27.2 | 30.2 | 24.8 | 29.0 | 2.65 |
+| 85 mm | max median power | 102 | 3.0 | 20 | 12.7 x 8 | 2 | 6 x 3.0 | 1.35 | 32.1 | 35.1 | 24.3 | 25.7 | 3.07 |
+| 85 mm | max median gain-law value | 88 | 3.0 | 15 | 12.7 x 8 | 3 | 6 x 1.5 | 1.35 | 27.8 | 30.5 | 25.9 | 28.6 | 2.72 |
+| 95 mm | current redesign | 40 | 1.0 | 10 | 12.7 x 8 | 0 | 5 x 2.0 | 1.5 (two-body) | 34.3 | 40.7 | 16.4 | 22.2 | 1.68 |
+| 95 mm | max median gain | 112 | 3.0 | 20 | 12.7 x 8 | 3 | 5 x 1.5 | 1.35 | 28.2 | 32.7 | 20.1 | 22.8 | 2.76 |
+| 95 mm | max median power | 118 | 3.0 | 20 | 12.7 x 8 | 2 | 6 x 3.0 | 1.35 | 35.0 | 39.6 | 19.3 | 20.0 | 3.35 |
+| 95 mm | max median gain-law value | 48 | 1.0 | 10 | 8.0 x 8 | 0 | 5 x 3.0 | 1.20 | 25.6 | 30.1 | 19.5 | 21.2 | 3.22 |
+| 105 mm | current redesign | 66 | 1.5 | 10 | 12.7 x 6 | 0 | 4 x 2.0 | 1.5 (two-body) | 32.0 | 38.6 | 16.1 | 18.0 | 1.61 |
+| 105 mm | max median gain | 116 | 3.0 | 15 | 12.7 x 8 | 3 | 4 x 2.0 | 1.35 | 29.7 | 35.9 | 16.8 | 18.0 | 2.90 |
+| 105 mm | max median power | 120 | 3.0 | 20 | 12.7 x 8 | 3 | 3 x 2.0 | 1.35 | 26.3 | 31.4 | 18.0 | 18.5 | 2.63 |
+| 105 mm | max median gain-law value | 68 | 1.5 | 10 | 10.0 x 8 | 0 | 4 x 2.0 | 1.20 | 24.7 | 30.7 | 16.9 | 18.0 | 3.72 |
+
+## fcheck
+
+| centre distance (mm) | sub-dipole model (mN) | point dipole C/d^4 (mN) |
+|---|---|---|
+| 10 | 102.216 | 128.344 |
+| 15 | 22.830 | 25.352 |
+| 20 | 7.557 | 8.021 |
+| 30 | 1.543 | 1.584 |
+
+## sweep_past
+
+| Case | Pick | driver magnet (mm) | gap (mm) | rest offset (mm) | static pull (mm) | sideways snap margin | release time (ms) | release / T_p | ring / pull | f_d / f_p (Hz) | V peak (steady) | P avg (uW) | voltage energy near f_p | energy off f_d harmonics |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 85 mm | most power | 3 x 1 | 6.0 | 3 | 0.97 | 36.5 | 13.1 | 0.34 | 0.94 | 16.1 / 25.7 | 7.19 | 11.5 | 0.0% | 0.1% |
+| 85 mm | most energy off the f_d harmonics | 3 x 1 | 6.0 | 3 | 0.97 | 36.5 | 13.1 | 0.34 | 0.94 | 16.1 / 25.7 | 7.19 | 11.5 | 0.0% | 0.1% |
+| 95 mm | most power | 4 x 1 | 6.0 | 3 | 1.53 | 29.2 | 15.4 | 0.34 | 0.95 | 16.4 / 22.2 | 7.20 | 15.3 | 0.0% | 0.1% |
+| 95 mm | most energy off the f_d harmonics | 3 x 2 | 6.0 | 3 | 1.49 | 30.1 | 15.7 | 0.35 | 0.94 | 16.4 / 22.2 | 7.47 | 15.3 | 0.0% | 0.1% |
+| 105 mm | most power | 4 x 1 | 6.0 | 0 | 1.59 | 24.9 | 12.0 | 0.22 | 0.96 | 16.1 / 18.0 | 11.59 | 59.1 | 9.2% | 0.1% |
+| 105 mm | most energy off the f_d harmonics | 4 x 1 | 6.0 | 3 | 1.59 | 24.9 | 2.6 | 0.05 | 1.01 | 16.1 / 18.0 | 11.49 | 56.4 | 9.5% | 0.1% |
+| 60 mm piezo + 105 mm driver | most power | 3 x 3 | 2.0 | 3 | 2.76 | 3.3 | 1.0 | 0.06 | 0.28 | 16.1 / 61.2 | 2.39 | 0.6 | 0.0% | 7.5% |
+| 60 mm piezo + 105 mm driver | most energy off the f_d harmonics | 3 x 2 | 2.0 | 3 | 2.40 | 3.7 | 2.5 | 0.15 | 0.46 | 16.1 / 61.2 | 2.25 | 0.6 | 0.0% | 7.8% |
+
+## sweep_past_count
+
+| Case | layouts tried | layouts passing the rules |
+|---|---|---|
+| 85 mm | 90 | 2 |
+| 95 mm | 90 | 3 |
+| 105 mm | 90 | 5 |
+| 60 mm piezo + 105 mm driver | 90 | 24 |
+
+## vehicle
+
+| Road | Input | Config | Design | P total (uW) | of which driver bimorph (uW) | driver PZT peak strain (ue) | V peak piezo | min gap (mm) | magnet contact |
+|---|---|---|---|---|---|---|---|---|---|
+| asphalt | recorded | 85 mm | Redesign (coaxial) | 1.40 | 0.00 | - | 5.69 | 41.7 | no |
+| asphalt | recorded | 85 mm | Magnets removed | 1.21 | 0.00 | - | 5.74 | 42.5 | no |
+| asphalt | recorded | 85 mm | Redesign + driver bimorph | 2.59 | 1.19 | 91 | 5.69 | 41.8 | no |
+| asphalt | recorded | 85 mm | Sweep-past | 0.51 | 0.00 | - | 3.73 | - | no |
+| asphalt | recorded | 95 mm | Redesign (coaxial) | 0.94 | 0.00 | - | 3.61 | 38.6 | no |
+| asphalt | recorded | 95 mm | Magnets removed | 0.75 | 0.00 | - | 3.83 | 39.5 | no |
+| asphalt | recorded | 95 mm | Redesign + driver bimorph | 1.83 | 0.88 | 83 | 3.62 | 38.7 | no |
+| asphalt | recorded | 95 mm | Sweep-past | 0.36 | 0.00 | - | 2.79 | - | no |
+| asphalt | recorded | 105 mm | Redesign (coaxial) | 0.87 | 0.00 | - | 3.40 | 36.4 | no |
+| asphalt | recorded | 105 mm | Magnets removed | 0.64 | 0.00 | - | 2.86 | 37.1 | no |
+| asphalt | recorded | 105 mm | Redesign + driver bimorph | 2.33 | 1.46 | 90 | 3.50 | 36.4 | no |
+| asphalt | recorded | 105 mm | Sweep-past | 0.56 | 0.00 | - | 2.95 | - | no |
+| asphalt | synthetic noise | 85 mm | Redesign (coaxial) | 1.02 | 0.00 | - | 3.40 | 41.9 | no |
+| asphalt | synthetic noise | 85 mm | Magnets removed | 0.86 | 0.00 | - | 3.01 | 42.8 | no |
+| asphalt | synthetic noise | 85 mm | Redesign + driver bimorph | 2.21 | 1.20 | 71 | 3.40 | 42.0 | no |
+| asphalt | synthetic noise | 85 mm | Sweep-past | 0.51 | 0.00 | - | 2.58 | - | no |
+| asphalt | synthetic noise | 95 mm | Redesign (coaxial) | 0.86 | 0.00 | - | 3.14 | 38.8 | no |
+| asphalt | synthetic noise | 95 mm | Magnets removed | 0.77 | 0.00 | - | 2.61 | 39.6 | no |
+| asphalt | synthetic noise | 95 mm | Redesign + driver bimorph | 1.69 | 0.82 | 65 | 3.15 | 39.0 | no |
+| asphalt | synthetic noise | 95 mm | Sweep-past | 0.45 | 0.00 | - | 2.48 | - | no |
+| asphalt | synthetic noise | 105 mm | Redesign (coaxial) | 0.96 | 0.00 | - | 3.88 | 36.8 | no |
+| asphalt | synthetic noise | 105 mm | Magnets removed | 0.73 | 0.00 | - | 3.36 | 37.3 | no |
+| asphalt | synthetic noise | 105 mm | Redesign + driver bimorph | 2.39 | 1.42 | 66 | 3.89 | 36.8 | no |
+| asphalt | synthetic noise | 105 mm | Sweep-past | 0.49 | 0.00 | - | 2.33 | - | no |
+| cobblestone | recorded | 85 mm | Redesign (coaxial) | 9.69 | 0.00 | - | 14.95 | 37.9 | no |
+| cobblestone | recorded | 85 mm | Magnets removed | 9.43 | 0.00 | - | 13.45 | 38.8 | no |
+| cobblestone | recorded | 85 mm | Redesign + driver bimorph | 24.74 | 15.05 | 340 | 14.99 | 38.3 | no |
+| cobblestone | recorded | 85 mm | Sweep-past | 9.66 | 0.00 | - | 12.59 | - | no |
+| cobblestone | recorded | 95 mm | Redesign (coaxial) | 8.95 | 0.00 | - | 12.22 | 35.2 | no |
+| cobblestone | recorded | 95 mm | Magnets removed | 7.01 | 0.00 | - | 10.90 | 35.9 | no |
+| cobblestone | recorded | 95 mm | Redesign + driver bimorph | 19.47 | 10.52 | 311 | 12.24 | 35.2 | no |
+| cobblestone | recorded | 95 mm | Sweep-past | 5.48 | 0.00 | - | 9.83 | - | no |
+| cobblestone | recorded | 105 mm | Redesign (coaxial) | 11.60 | 0.00 | - | 12.69 | 32.2 | no |
+| cobblestone | recorded | 105 mm | Magnets removed | 9.01 | 0.00 | - | 13.97 | 32.9 | no |
+| cobblestone | recorded | 105 mm | Redesign + driver bimorph | 29.43 | 17.67 | 335 | 12.76 | 31.9 | no |
+| cobblestone | recorded | 105 mm | Sweep-past | 6.39 | 0.00 | - | 11.58 | - | no |
+| cobblestone | synthetic noise | 85 mm | Redesign (coaxial) | 14.80 | 0.00 | - | 14.17 | 38.6 | no |
+| cobblestone | synthetic noise | 85 mm | Magnets removed | 13.44 | 0.00 | - | 14.82 | 39.3 | no |
+| cobblestone | synthetic noise | 85 mm | Redesign + driver bimorph | 34.35 | 19.56 | 306 | 14.18 | 38.6 | no |
+| cobblestone | synthetic noise | 85 mm | Sweep-past | 10.44 | 0.00 | - | 12.30 | - | no |
+| cobblestone | synthetic noise | 95 mm | Redesign (coaxial) | 16.21 | 0.00 | - | 14.44 | 34.4 | no |
+| cobblestone | synthetic noise | 95 mm | Magnets removed | 15.17 | 0.00 | - | 14.65 | 35.9 | no |
+| cobblestone | synthetic noise | 95 mm | Redesign + driver bimorph | 29.03 | 12.79 | 324 | 14.41 | 34.7 | no |
+| cobblestone | synthetic noise | 95 mm | Sweep-past | 9.13 | 0.00 | - | 11.27 | - | no |
+| cobblestone | synthetic noise | 105 mm | Redesign (coaxial) | 18.12 | 0.00 | - | 14.60 | 33.0 | no |
+| cobblestone | synthetic noise | 105 mm | Magnets removed | 13.94 | 0.00 | - | 13.17 | 33.0 | no |
+| cobblestone | synthetic noise | 105 mm | Redesign + driver bimorph | 40.65 | 22.21 | 324 | 14.65 | 32.6 | no |
+| cobblestone | synthetic noise | 105 mm | Sweep-past | 8.25 | 0.00 | - | 11.93 | - | no |
+
+## experiment
+
+| Config | a (m/s²) | lower mode, sim, driver peak (Hz) | upper mode, sim, voltage peak (Hz) | lower mode, theory (Hz) | upper mode, theory (Hz) | piezo peak, magnets removed (Hz) | V peak at f_d (mV) | V peak at f_d, magnets removed (mV) | power gain at f_d (sim) | largest loss from magnets: f (gain) | power gain (law) | largest V peak in sweep (mV) | closest gap (mm) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 85 mm | 0.1 | 15.90 | 25.30 | 15.94 | 25.18 | 25.80 | 135 | 42 | 10.15 | 15.2 (0.11x) | 10.07 | 978 | 42.6 |
+| 85 mm | 0.2 | 15.90 | 25.30 | 15.94 | 25.18 | 25.80 | 271 | 84 | 10.15 | 15.2 (0.11x) | 10.07 | 1956 | 42.4 |
+| 85 mm | 0.3 | 15.90 | 25.30 | 15.94 | 25.18 | 25.80 | 410 | 126 | 10.16 | 15.2 (0.11x) | 10.07 | 2934 | 42.1 |
+| 85 mm | 0.5 | 15.90 | 25.30 | 15.94 | 25.18 | 25.80 | 695 | 209 | 10.22 | 15.2 (0.11x) | 10.07 | 4891 | 41.4 |
+| 95 mm | 0.1 | 16.30 | 21.80 | 16.26 | 21.71 | 22.30 | 159 | 63 | 6.36 | 15.7 (0.22x) | 5.68 | 1044 | 39.5 |
+| 95 mm | 0.2 | 16.30 | 21.80 | 16.26 | 21.71 | 22.30 | 319 | 126 | 6.36 | 15.7 (0.22x) | 5.68 | 2088 | 39.4 |
+| 95 mm | 0.3 | 16.30 | 21.80 | 16.26 | 21.71 | 22.30 | 480 | 188 | 6.37 | 15.7 (0.22x) | 5.68 | 3131 | 39.0 |
+| 95 mm | 0.5 | 16.30 | 21.80 | 16.26 | 21.71 | 22.30 | 807 | 314 | 6.41 | 15.7 (0.22x) | 5.68 | 5219 | 38.3 |
+| 105 mm | 0.1 | 16.00 | 17.70 | 16.00 | 17.65 | 18.00 | 340 | 166 | 4.18 | 15.6 (0.48x) | 3.89 | 1230 | 37.6 |
+| 105 mm | 0.2 | 16.00 | 17.70 | 16.00 | 17.65 | 18.00 | 680 | 333 | 4.19 | 15.6 (0.48x) | 3.89 | 2461 | 37.3 |
+| 105 mm | 0.3 | 16.00 | 17.70 | 16.00 | 17.65 | 18.00 | 1023 | 499 | 4.20 | 15.6 (0.48x) | 3.89 | 3692 | 36.9 |
+| 105 mm | 0.5 | 16.00 | 17.70 | 16.00 | 17.65 | 18.00 | 1715 | 832 | 4.24 | 15.6 (0.48x) | 3.89 | 6157 | 36.2 |
+

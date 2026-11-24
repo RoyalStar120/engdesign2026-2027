@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MagPluck Engineering Design Portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+  @page { size: letter; margin: 0; }
+  :root { --navy:#1F3A68; --coral:#C9573A; --coralbg:#FBE9E3; --ink:#24282F; --mute:#5D6576; --rule:#C9D0DE; --tint:#EEF2F8; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#fff; color:var(--ink); }
+  body { font-family:"Source Sans 3","Segoe UI",Arial,sans-serif; font-size:10.4pt; line-height:1.36; }
+  .page { width:8.5in; height:11in; padding:0.4in 0.42in; page-break-after:always; break-after:page; }
+  .frame { border:1.6px solid var(--navy); height:100%; padding:0.26in 0.36in 0.2in; position:relative; overflow:hidden; }
+  .pnum { position:absolute; right:0.3in; bottom:0.14in; font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:10pt; }
+  h1 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:19pt; text-align:center; margin:0 0 8px; font-weight:700; text-wrap:balance; }
+  h2 { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-size:11.6pt; margin:9px 0 3px; font-weight:600; }
+  p { margin:0 0 6px; }
+  ul, ol { margin:2px 0 6px; padding-left:18px; } li { margin-bottom:2px; }
+  b, strong { font-weight:700; }
+  .fig { margin:2px 0 6px; text-align:center; }
+  .fig img, .fig svg { width:100%; height:auto; display:block; }
+  .fr { float:right; margin-left:14px; }
+  .fl { float:left; margin-right:14px; }
+  .cap { font-size:8.3pt; line-height:1.25; color:var(--ink); margin-top:2px; }
+  .cap b { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; }
+  .src { display:block; color:var(--mute); font-size:7.6pt; margin-top:1px; }
+  .clear { clear:both; }
+  .box { border:1.4px solid var(--navy); border-radius:6px; padding:7px 10px; margin:6px 0; background:#fff; }
+  .box.tint { background:var(--tint); border-color:var(--tint); }
+  .box.coral { background:var(--coralbg); border-color:var(--coralbg); }
+  .box h3 { font-family:Outfit,Arial,sans-serif; font-size:10.2pt; color:var(--navy); margin:0 0 3px; }
+  .reqs { display:grid; grid-template-columns:1fr 1fr; gap:4px 14px; font-size:9.6pt; }
+  .reqs span b { color:var(--coral); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .two > div { min-width:0; }
+  .pro h3 { color:#2E6B45; } .con h3 { color:var(--coral); }
+  .pro, .con { font-size:9.6pt; }
+  .meets { width:100%; border-collapse:collapse; font-size:9.3pt; margin-top:3px; }
+  .meets td { padding:3px 6px; border-top:1px solid var(--rule); vertical-align:top; }
+  .meets td:first-child { white-space:nowrap; font-weight:600; color:var(--navy); width:1%; }
+  .meets td:nth-child(2) { width:1%; text-align:center; font-size:11pt; color:var(--navy); }
+  .dot { font-size:11pt; color:var(--navy); }
+  table.cmp { width:100%; border-collapse:collapse; font-size:9.1pt; }
+  table.cmp th { font-family:Outfit,Arial,sans-serif; font-weight:600; color:var(--navy); text-align:left; border-bottom:1.6px solid var(--navy); padding:4px 5px; }
+  table.cmp td { border-bottom:1px solid var(--rule); padding:4px 5px; vertical-align:top; }
+  table.cmp td.c, table.cmp th.c { text-align:center; font-size:12pt; width:30px; }
+  table.cmp tr.sel td { background:var(--coralbg); }
+  table.cmp tr.sel td:first-child { color:var(--coral); font-weight:700; }
+  table.spec { width:100%; border-collapse:collapse; font-size:9pt; }
+  table.spec td { padding:2.5px 5px; border-bottom:1px solid var(--rule); vertical-align:top; }
+  table.spec td:first-child { color:var(--mute); width:56%; }
+  .legend { font-size:7.8pt; color:var(--mute); text-align:center; margin-top:3px; }
+  .kicker { font-family:Outfit,Arial,sans-serif; font-size:8pt; letter-spacing:0.08em; text-transform:uppercase; color:var(--coral); font-weight:600; }
+  /* title page */
+  .title { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; }
+  .title .big { font-family:Outfit,Arial,sans-serif; font-weight:600; color:var(--navy); font-size:46pt; line-height:1.02; }
+  .title .bar { width:64px; height:3px; background:var(--navy); margin:22px auto 18px; border-radius:2px; }
+  .title .sub { font-family:Outfit,Arial,sans-serif; font-weight:500; color:var(--navy); font-size:13.2pt; max-width:5.6in; }
+  .title .theme { font-family:Outfit,Arial,sans-serif; color:var(--coral); font-size:11pt; margin-top:10px; letter-spacing:0.02em; }
+  .title .meta { margin-top:30px; color:var(--mute); font-size:11pt; line-height:1.6; }
+  /* toc */
+  .toc { margin-top:14px; font-size:11pt; }
+  .toc div { display:flex; align-items:baseline; margin:9px 0; }
+  .toc .t { font-weight:600; }
+  .toc .sub { padding-left:26px; font-weight:400; }
+  .toc .lead { flex:1; border-bottom:1px dotted var(--mute); margin:0 8px; transform:translateY(-3px); }
+  .toc .n { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; }
+  .refs p { font-size:8.7pt; line-height:1.28; padding-left:22px; text-indent:-22px; margin:0 0 5px; }
+  .i { display:inline-block; width:10px; height:10px; border-radius:50%; border:1.6px solid var(--navy); vertical-align:-1px; }
+  .i.f { background:var(--navy); } .i.h { background:linear-gradient(90deg,var(--navy) 50%,transparent 50%); }
+  svg text { font-family:"Source Sans 3",Arial,sans-serif; }
+  h2 { font-family:"Space Grotesk",Arial,sans-serif; font-weight:500; font-size:12pt; }
+  .simfig { position:relative; margin:0; }
+  .simfig img { width:100%; display:block; border:1px solid var(--rule); }
+  .bd { position:absolute; width:17px; height:17px; border-radius:50%; background:var(--coral); color:#fff; font:700 9.5pt/17px Outfit,Arial,sans-serif; text-align:center; box-shadow:0 0 0 1.5px #fff; transform:translate(-50%,-50%); }
+  .parts { font-size:9.3pt; padding-left:0; list-style:none; margin:0; overflow:hidden; }
+  .parts li { margin-bottom:5px; padding-left:21px; position:relative; }
+  .parts li .n { position:absolute; left:0; top:1px; width:15px; height:15px; border-radius:50%; background:var(--coral); color:#fff; font:700 8.5pt/15px Outfit,Arial,sans-serif; text-align:center; }
+  .steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:4px 0 2px; }
+  .steps img { width:100%; display:block; border:1px solid var(--rule); }
+  .steps .sc { font-size:8pt; text-align:center; line-height:1.2; margin-top:2px; }
+  .steps .sc b { font-family:Outfit,Arial,sans-serif; color:var(--navy); font-weight:600; display:block; }
+  .steps .sc span { color:var(--mute); }
+</style>
+</head>
+<body>
+<section class="page"><div class="frame">
+  <div class="kicker" style="text-align:center; letter-spacing:0.18em">Possible Solution #3</div>
+  <h1>MagPluck: Magnetically Plucked Dual Cantilever</h1>
+  <h2 style="margin-top:2px">What Is This Solution?</h2>
+  <p>MagPluck keeps the good idea from Solution #2 (a slow driver plucks a piezo beam) but <b>replaces the pick with a pair of magnets</b>, so nothing ever touches. Two cantilevers share one base. The <b>driver beam</b> carries a large magnet and is tuned to about 16 Hz, so it swings with slow car vibration. The <b>piezo beam</b> carries a PZT bimorph and a small magnet. The two magnets face each other across an air gap of about 39 mm (Figure H).</p>
+  <div class="steps">
+    <div><img src="figs/pluck_step1.png" alt=""><div class="sc"><b>1. Driver swings close</b><span>magnetic pull bends the piezo beam</span></div></div>
+    <div><img src="figs/pluck_step2.png" alt=""><div class="sc"><b>2. Driver swings away</b><span>pull fades fast (1/d⁴): beam is released</span></div></div>
+    <div><img src="figs/pluck_step3.png" alt=""><div class="sc"><b>3. Piezo beam rings</b><span>PZT makes voltage; nothing touched</span></div></div>
+  </div>
+  <div class="cap" style="text-align:center"><b>Figure H:</b> One magnetic pluck in three steps, from our sideways simulation (driver beam gold, piezo beam red, PZT shaded).<span class="src">Screenshots of our team's simulation (105 mm version); piezo motion drawn 8× larger.</span></div>
+
+  <div class="fr" style="width:3.35in; margin-top:8px">
+    <div class="fig"><img src="figs/magnet_sweep_sim.png" alt=""></div>
+    <div class="cap" style="text-align:center"><b>Figure I:</b> Our 85 mm version shaken at 2 m/s², with and without magnets.<span class="src">Simulated by our team; the magnets never touched in any run.</span></div>
+  </div>
+  <h2>Scientific Basis</h2>
+  <ul>
+    <li><b>Steep magnetic force:</b> The pull between two facing magnets is F = C/d⁴. Halving the gap makes the pull 16 times stronger, so a small driver swing becomes a big change in force: a pluck.</li>
+    <li><b>Snap safety rule:</b> If the gap gets too small, the pull grows faster than the beam can resist (4C/d⁵ &gt; k) and the magnets snap together. We design the closest approach to be <b>1.5 times</b> this snap distance.</li>
+  </ul>
+  <h2>Engineering Feasibility</h2>
+  <p>Every part is buildable: 3D-printed PETG beams, off-the-shelf N52 magnets, and a store-bought PZT bimorph. We checked the design with a computer model of both beams, the magnetic force, and the piezo circuit:</p>
+  <div class="clear"></div>
+  <ul>
+    <li><b>We found and fixed a sizing error.</b> Our first calculation had the snap distance about 2.4 times too small. At the original 8–10 mm gap, the model showed the magnets snapping together. A shorter, stiffer driver with a larger magnet fixed it.</li>
+    <li><b>No contact:</b> In our 1,278-run frequency sweep (5–40 Hz), the magnets never touched.</li>
+    <li><b>More output:</b> At the driver's frequency, the magnets raised output <b>2.1 to 3.9 times</b> compared with the same beams without magnets, adding a second working peak (Figure I).</li>
+  </ul>
+  <table class="meets">
+    <tr><td>R1 Low frequency</td><td><span class="i f"></span></td><td>Driver tuned to about 16 Hz; piezo beam stays at 18–26 Hz.</td></tr>
+    <tr><td>R2 Non-contact</td><td><span class="i f"></span></td><td>Magnets pluck across an air gap that always stays wider than the snap distance.</td></tr>
+    <tr><td>R3 Range of frequencies</td><td><span class="i h"></span></td><td>Two working peaks instead of one; full plucks so far only near the driver's frequency.</td></tr>
+    <tr><td>R4 Simple and passive</td><td><span class="i f"></span></td><td>No motors or power needed; the gap only has to be set once.</td></tr>
+  </table>
+  <div class="legend"><span class="i f"></span> meets &nbsp;<span class="i h"></span> partly meets &nbsp;<span class="i"></span> does not meet. Scores are our team's judgment from the cited sources and our model.</div>
+  <div class="pnum">7</div>
+</div></section>
+</body></html>
